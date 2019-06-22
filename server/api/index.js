@@ -2,6 +2,7 @@ const router = require('express').Router();
 module.exports = router;
 
 router.use('/purchases', require('./purchases'));
+router.use('/stocks', require('./stocks'));
 
 router.use((req, res, next) => {
   const error = new Error('Not Found');

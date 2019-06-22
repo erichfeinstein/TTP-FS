@@ -13,6 +13,10 @@ const Purchase = db.define('purchase', {
       min: 1, //Must buy at least one share
     },
   },
+  pricePurchasedAt: {
+    type: Sequelize.INTEGER, //In cents
+    allowNull: false,
+  },
 });
 
 module.exports = Purchase;
