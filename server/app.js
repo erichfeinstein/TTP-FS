@@ -28,12 +28,12 @@ passport.deserializeUser(async (id, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', function(req, res, next) {
-  res.sendFile('index.html');
-});
-
 app.use('/auth', require('./auth'));
 app.use('/api', require('./api'));
+
+app.get('*', function(req, res, next) {
+  res.sendFile('index.html', { root: './public' });
+});
 
 const PORT = 8080;
 app.listen(PORT, function() {
