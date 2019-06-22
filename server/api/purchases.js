@@ -1,10 +1,11 @@
 const router = require('express').Router();
-const { Purchase } = require('../db/models');
+const { Purchase, User } = require('../db/models');
 module.exports = router;
 
 //IEX functions
 const { getPrice } = require('../iex');
 
+//Make a new stock purchase
 router.post('/', async (req, res, next) => {
   try {
     if (req.user) {
@@ -13,8 +14,14 @@ router.post('/', async (req, res, next) => {
       const pricePurchasedAt = await getPrice(tickerSymbol);
       //Ensure valid tickerSymbol
       if (pricePurchasedAt < 0) throw new Error('Bad ticker symbol!');
-      //TODO Add req.user.id to Purchase creation
-      await Purchase.create({ tickerSymbol, numberOfShares, pricePurchasedAt });
+      const purchase = await Purchase.create({
+        tickerSymbol,
+        numberOfShares,
+        pricePurchasedAt,
+      });
+
+      const userId = req.user.id;
+      purchase.setUser(await User.findById(userId));
       res.status(201).send('Successfully purchased');
     } else {
       res.send('You must be signed in to purchase');
@@ -23,3 +30,23 @@ router.post('/', async (req, res, next) => {
     next(error);
   }
 });
+
+//Get a user's purchases (only your own for privacy reasons)
+router.get('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const purchases = await Purchase.findAll({
+        where: {
+          userId: req.user.id,
+        },
+      });
+      res.json(purchases);
+    } else {
+      res.send('You must be signed in to view purchases');
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+//Portfolio
