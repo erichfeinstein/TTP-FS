@@ -32,6 +32,7 @@ app.get('/', function(req, res, next) {
 });
 
 app.use('/auth', require('./auth'));
+app.use('/api', require('./api'));
 
 const PORT = 8080;
 app.listen(PORT, function() {
