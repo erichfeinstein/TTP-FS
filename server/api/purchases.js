@@ -11,15 +11,15 @@ router.post('/', async (req, res, next) => {
     if (req.user) {
       const tickerSymbol = req.body.tickerSymbol;
       const numberOfShares = req.body.numberOfShares;
-      const pricePurchasedAt = await getQuote(tickerSymbol).latestPrice;
+      const { latestPrice } = await getQuote(tickerSymbol);
       //Ensure valid tickerSymbol
-      if (pricePurchasedAt < 0) throw new Error('Bad ticker symbol!');
+      if (latestPrice < 0) throw new Error('Bad ticker symbol!');
 
       //Create a purchase for purchase history
       const purchase = await Purchase.create({
         tickerSymbol,
         numberOfShares,
-        pricePurchasedAt,
+        pricePurchasedAt: latestPrice * 100, //Adjust for cents
       });
       const userId = req.user.id;
       purchase.setUser(await User.findById(userId));

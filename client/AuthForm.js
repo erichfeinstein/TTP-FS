@@ -24,7 +24,7 @@ export default class AuthForm extends React.Component {
           <div>Email</div>
           <br />
           <input
-            className="auth-form-field"
+            className="form-field"
             type="text"
             value={this.state.email}
             onChange={evt =>
@@ -39,7 +39,7 @@ export default class AuthForm extends React.Component {
           <div>Password</div>
           <br />
           <input
-            className="auth-form-field"
+            className="form-field"
             type="password"
             onChange={evt =>
               this.setState({
@@ -59,7 +59,7 @@ export default class AuthForm extends React.Component {
               )}
             <br />
             <input
-              className="auth-form-field"
+              className="form-field"
               type="password"
               onChange={evt =>
                 this.setState({

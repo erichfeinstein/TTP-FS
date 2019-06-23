@@ -50,8 +50,6 @@ export default class App extends React.Component {
         </div>
         <br />
         <div id="main">
-          <h1 id="title">Stocks App</h1>
-          <hr />
           <Switch>
             <Route
               exact

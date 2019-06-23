@@ -3,6 +3,7 @@ import axios from 'axios';
 
 //Components
 import PortfolioTable from './PortfolioTable';
+import Purchase from './Purchase';
 
 export default class Portfolio extends React.Component {
   constructor() {
@@ -15,6 +16,10 @@ export default class Portfolio extends React.Component {
   //setInterval update all prices
 
   async componentDidMount() {
+    await this.retrievePortfolio();
+  }
+
+  retrievePortfolio = async () => {
     const { data } = await axios.get(
       `/api/users/${this.props.userId}/portfolio`
     );
@@ -32,13 +37,14 @@ export default class Portfolio extends React.Component {
     this.setState({
       stocks,
     });
-  }
+  };
 
   purchase = async (tickerSymbol, numberOfShares) => {
     await axios.post('/api/purchases', {
       tickerSymbol,
       numberOfShares,
     });
+    await this.retrievePortfolio();
   };
 
   render() {
@@ -46,7 +52,7 @@ export default class Portfolio extends React.Component {
       <div id="portfolio-container">
         <div id="portfolio-page-container">
           <PortfolioTable stocks={this.state.stocks} />
-          <div id="purchase-container">Purchase Component</div>
+          <Purchase purchase={this.purchase} />
         </div>
       </div>
     );
