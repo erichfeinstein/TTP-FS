@@ -5,10 +5,11 @@ const token = process.env.TOKEN || localToken;
 
 const URL = 'https://cloud.iexapis.com';
 
-const getPrice = async tickerSymbol => {
+const getQuote = async tickerSymbol => {
   try {
     const { data } = await axios.get(
-      URL + `/stable/stock/${tickerSymbol}/price?token=${token}`
+      URL + `/stable/stock/${tickerSymbol}/quote?token=${token}`
+      // URL + `/stable/stock/${tickerSymbol}/price?token=${token}`
     );
     return data;
   } catch (error) {
@@ -17,4 +18,16 @@ const getPrice = async tickerSymbol => {
   }
 };
 
-module.exports = { getPrice };
+// const getIntradayPrices = async tickerSymbol => {
+//   try {
+//     const { data } = await axios.get(
+//       URL + `/stable/stock/${tickerSymbol}/intraday-prices?token=${token}`
+//     );
+//     return data;
+//   } catch (error) {
+//     console.error('Error! Bad ticker symbol');
+//     return -1;
+//   }
+// };
+
+module.exports = { getQuote };

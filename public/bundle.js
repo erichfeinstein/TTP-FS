@@ -241,7 +241,7 @@ var App = function (_React$Component) {
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
             'h1',
             { id: 'title' },
-            'Stonks'
+            'Stocks App'
           ),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -535,6 +535,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _PortfolioTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PortfolioTable */ "./client/PortfolioTable.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -548,13 +549,43 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+//Components
+
+
 var Portfolio = function (_React$Component) {
   _inherits(Portfolio, _React$Component);
 
   function Portfolio() {
+    var _this2 = this;
+
     _classCallCheck(this, Portfolio);
 
     var _this = _possibleConstructorReturn(this, (Portfolio.__proto__ || Object.getPrototypeOf(Portfolio)).call(this));
+
+    _this.purchase = function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(tickerSymbol, numberOfShares) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/purchases', {
+                  tickerSymbol: tickerSymbol,
+                  numberOfShares: numberOfShares
+                });
+
+              case 2:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2);
+      }));
+
+      return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+      };
+    }();
 
     _this.state = {
       stocks: []
@@ -565,25 +596,139 @@ var Portfolio = function (_React$Component) {
   _createClass(Portfolio, [{
     key: 'componentDidMount',
     value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _ref2, data;
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var _ref3, data;
 
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _context.next = 2;
+                _context2.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/users/' + this.props.userId + '/portfolio');
 
               case 2:
-                _ref2 = _context.sent;
-                data = _ref2.data;
+                _ref3 = _context2.sent;
+                data = _ref3.data;
 
                 this.setState({
                   stocks: data
                 });
 
               case 5:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function componentDidMount() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return componentDidMount;
+    }()
+  }, {
+    key: 'render',
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        'div',
+        { id: 'portfolio-container' },
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          'h2',
+          null,
+          'Portfolio'
+        ),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          'div',
+          { id: 'portfolio-page-container' },
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PortfolioTable__WEBPACK_IMPORTED_MODULE_2__["PortfolioTable"], { stocks: this.state.stocks }),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            { id: 'purchase-container' },
+            'Purchase Component'
+          )
+        )
+      );
+    }
+  }]);
+
+  return Portfolio;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (Portfolio);
+
+/***/ }),
+
+/***/ "./client/PortfolioListItem.js":
+/*!*************************************!*\
+  !*** ./client/PortfolioListItem.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var PortfolioListItem = function (_React$Component) {
+  _inherits(PortfolioListItem, _React$Component);
+
+  function PortfolioListItem() {
+    _classCallCheck(this, PortfolioListItem);
+
+    var _this = _possibleConstructorReturn(this, (PortfolioListItem.__proto__ || Object.getPrototypeOf(PortfolioListItem)).call(this));
+
+    _this.state = {
+      marketOpen: 0,
+      latestPrice: 0
+    };
+    return _this;
+  }
+
+  _createClass(PortfolioListItem, [{
+    key: 'componentDidMount',
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _ref2, data, marketOpen, latestPrice;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/stocks/' + this.props.stock.tickerSymbol);
+
+              case 2:
+                _ref2 = _context.sent;
+                data = _ref2.data;
+                marketOpen = data.open;
+                latestPrice = data.latestPrice;
+
+
+                this.setState({
+                  marketOpen: marketOpen,
+                  latestPrice: latestPrice
+                });
+
+                //Interval on price update here?
+
+              case 7:
               case 'end':
                 return _context.stop();
             }
@@ -600,35 +745,72 @@ var Portfolio = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _state = this.state,
+          latestPrice = _state.latestPrice,
+          marketOpen = _state.marketOpen;
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'div',
-        { id: 'transactions-container' },
+        { className: 'portfolio-list-item' },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-          'h2',
+          'span',
           null,
-          'Portfolio'
+          this.props.stock.tickerSymbol,
+          ' -',
+          ' ',
+          this.props.stock.numberOfSharesOwned,
+          ' Shares'
         ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-          'div',
-          { className: 'table-container' },
-          this.state.stocks.map(function (stock, i) {
-            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              'li',
-              { key: i },
-              stock.tickerSymbol,
-              ', ',
-              stock.count
-            );
-          })
+          'span',
+          {
+            className: latestPrice > marketOpen && 'priceUp' || latestPrice < marketOpen && 'priceDown' || latestPrice === marketOpen && 'priceEven'
+          },
+          this.state.latestPrice
         )
       );
     }
   }]);
 
-  return Portfolio;
+  return PortfolioListItem;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["default"] = (Portfolio);
+/* harmony default export */ __webpack_exports__["default"] = (PortfolioListItem);
+
+/***/ }),
+
+/***/ "./client/PortfolioTable.js":
+/*!**********************************!*\
+  !*** ./client/PortfolioTable.js ***!
+  \**********************************/
+/*! exports provided: PortfolioTable */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortfolioTable", function() { return PortfolioTable; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _PortfolioListItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PortfolioListItem */ "./client/PortfolioListItem.js");
+
+
+//Components
+
+
+var PortfolioTable = function PortfolioTable(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+    'div',
+    { className: 'table-container' },
+    props.stocks.map(function (stock, i) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        'div',
+        { key: i },
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PortfolioListItem__WEBPACK_IMPORTED_MODULE_1__["default"], { stock: stock }),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null)
+      );
+    })
+  );
+};
 
 /***/ }),
 
@@ -692,9 +874,8 @@ var Transactions = function (_React$Component) {
                 this.setState({
                   purchases: data
                 });
-                console.log('purchases', data);
 
-              case 6:
+              case 5:
               case 'end':
                 return _context.stop();
             }

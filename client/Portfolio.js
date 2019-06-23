@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
+//Components
+import { PortfolioTable } from './PortfolioTable';
+
 export default class Portfolio extends React.Component {
   constructor() {
     super();
@@ -18,18 +21,20 @@ export default class Portfolio extends React.Component {
     });
   }
 
+  purchase = async (tickerSymbol, numberOfShares) => {
+    await axios.post('/api/purchases', {
+      tickerSymbol,
+      numberOfShares,
+    });
+  };
+
   render() {
     return (
-      <div id="transactions-container">
+      <div id="portfolio-container">
         <h2>Portfolio</h2>
-        <div className="table-container">
-          {this.state.stocks.map((stock, i) => {
-            return (
-              <li key={i}>
-                {stock.tickerSymbol}, {stock.count}
-              </li>
-            );
-          })}
+        <div id="portfolio-page-container">
+          <PortfolioTable stocks={this.state.stocks} />
+          <div id="purchase-container">Purchase Component</div>
         </div>
       </div>
     );
