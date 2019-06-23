@@ -18,21 +18,7 @@ export default class AuthForm extends React.Component {
       this.state.password === this.state.passwordReEnter && !isLogin;
     return (
       <div id="auth-form">
-        {/* <div style={{ display: 'flex', justifyContent: 'space-between' }}> */}
         <h2>{isLogin ? 'Log In' : 'Sign Up'}</h2>
-        {/* <button
-            onClick={() =>
-              this.setState({
-                isLogin: !this.state.isLogin,
-              })
-            }
-            className="button"
-          >
-            {this.state.isLogin
-              ? 'Create a New Account'
-              : 'Already Have an Account? Log In'}
-          </button> */}
-        {/* </div> */}
         <br />
         <div>
           <div>Email</div>

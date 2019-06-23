@@ -8,6 +8,7 @@ const history = createBrowserHistory();
 
 //Components
 import Transactions from './Transactions';
+import Portfolio from './Portfolio';
 import AuthForm from './AuthForm';
 
 export default class App extends React.Component {
@@ -32,6 +33,9 @@ export default class App extends React.Component {
       <Router history={history}>
         <div id="nav-bar">
           <div>
+            <span>{this.state.user && this.state.user.email}</span>
+          </div>
+          <div>
             <Link to="/portfolio">Portfolio</Link>
           </div>
           <div>
@@ -46,9 +50,8 @@ export default class App extends React.Component {
         </div>
         <br />
         <div id="main">
-          <h1 id="title">Stocks App</h1>
+          <h1 id="title">Stonks</h1>
           <hr />
-          {/* <Route path="/portfolio" component={Portfolio} /> */}
           <Switch>
             <Route
               exact
@@ -60,7 +63,19 @@ export default class App extends React.Component {
               path="/signup"
               component={() => <AuthForm isLogin={false} />}
             />
-            <Route exact path="/transactions" component={Transactions} />
+            <Route
+              path="/portfolio"
+              component={() => (
+                <Portfolio userId={this.state.user && this.state.user.id} />
+              )}
+            />
+            <Route
+              exact
+              path="/transactions"
+              component={() => (
+                <Transactions userId={this.state.user && this.state.user.id} />
+              )}
+            />
           </Switch>
         </div>
       </Router>
