@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 //Components
-import { PortfolioTable } from './PortfolioTable';
+import PortfolioTable from './PortfolioTable';
 
 export default class Portfolio extends React.Component {
   constructor() {
@@ -12,12 +12,25 @@ export default class Portfolio extends React.Component {
     };
   }
 
+  //setInterval update all prices
+
   async componentDidMount() {
     const { data } = await axios.get(
       `/api/users/${this.props.userId}/portfolio`
     );
+    const stocks = await Promise.all(
+      data.map(async stock => {
+        const res = await axios.get(`/api/stocks/${stock.tickerSymbol}`);
+        return {
+          tickerSymbol: stock.tickerSymbol,
+          numberOfSharesOwned: stock.numberOfSharesOwned,
+          marketOpen: res.data.open,
+          latestPrice: res.data.latestPrice,
+        };
+      })
+    );
     this.setState({
-      stocks: data,
+      stocks,
     });
   }
 
@@ -31,7 +44,6 @@ export default class Portfolio extends React.Component {
   render() {
     return (
       <div id="portfolio-container">
-        <h2>Portfolio</h2>
         <div id="portfolio-page-container">
           <PortfolioTable stocks={this.state.stocks} />
           <div id="purchase-container">Purchase Component</div>

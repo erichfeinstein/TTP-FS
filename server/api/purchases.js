@@ -35,7 +35,6 @@ router.post('/', async (req, res, next) => {
         existingStock.numberOfSharesOwned += numberOfShares;
         await existingStock.save();
       } else {
-        console.log('here', tickerSymbol, numberOfShares);
         const newStock = await Stock.create({
           tickerSymbol,
           numberOfSharesOwned: numberOfShares,

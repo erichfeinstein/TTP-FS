@@ -54,24 +54,6 @@ app.get('*', function(req, res, next) {
   res.sendFile('index.html', { root: './public' });
 });
 
-// const PORT = 8080;
-// // app.listen(PORT, function() {
-// //   console.log('listening on port', PORT);
-// // });
-// const startListening = () => {
-//   // start listening
-//   const server = app.listen(PORT, () =>
-//     console.log(`Mixing it up on port ${PORT}`)
-//   );
-// };
-// const syncDb = () => db.sync();
-// async function bootApp() {
-//   await sessionStore.sync();
-//   await syncDb();
-//   await createApp();
-//   await startListening();
-// }
-
 const PORT = 8080;
 const createApp = () => {
   // body parsing middleware

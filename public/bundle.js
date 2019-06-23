@@ -593,33 +593,72 @@ var Portfolio = function (_React$Component) {
     return _this;
   }
 
+  //setInterval update all prices
+
   _createClass(Portfolio, [{
     key: 'componentDidMount',
     value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var _ref3, data;
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var _this3 = this;
 
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        var _ref3, data, stocks;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                _context2.next = 2;
+                _context3.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/users/' + this.props.userId + '/portfolio');
 
               case 2:
-                _ref3 = _context2.sent;
+                _ref3 = _context3.sent;
                 data = _ref3.data;
+                _context3.next = 6;
+                return Promise.all(data.map(function () {
+                  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(stock) {
+                    var res;
+                    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            _context2.next = 2;
+                            return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/stocks/' + stock.tickerSymbol);
+
+                          case 2:
+                            res = _context2.sent;
+                            return _context2.abrupt('return', {
+                              tickerSymbol: stock.tickerSymbol,
+                              numberOfSharesOwned: stock.numberOfSharesOwned,
+                              marketOpen: res.data.open,
+                              latestPrice: res.data.latestPrice
+                            });
+
+                          case 4:
+                          case 'end':
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2, _this3);
+                  }));
+
+                  return function (_x3) {
+                    return _ref4.apply(this, arguments);
+                  };
+                }()));
+
+              case 6:
+                stocks = _context3.sent;
 
                 this.setState({
-                  stocks: data
+                  stocks: stocks
                 });
 
-              case 5:
+              case 8:
               case 'end':
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
       function componentDidMount() {
@@ -635,14 +674,9 @@ var Portfolio = function (_React$Component) {
         'div',
         { id: 'portfolio-container' },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-          'h2',
-          null,
-          'Portfolio'
-        ),
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'div',
           { id: 'portfolio-page-container' },
-          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PortfolioTable__WEBPACK_IMPORTED_MODULE_2__["PortfolioTable"], { stocks: this.state.stocks }),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PortfolioTable__WEBPACK_IMPORTED_MODULE_2__["default"], { stocks: this.state.stocks }),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
             'div',
             { id: 'purchase-container' },
@@ -664,6 +698,51 @@ var Portfolio = function (_React$Component) {
 /*!*************************************!*\
   !*** ./client/PortfolioListItem.js ***!
   \*************************************/
+/*! exports provided: PortfolioListItem */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortfolioListItem", function() { return PortfolioListItem; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var PortfolioListItem = function PortfolioListItem(props) {
+  var _props$stock = props.stock,
+      tickerSymbol = _props$stock.tickerSymbol,
+      numberOfSharesOwned = _props$stock.numberOfSharesOwned,
+      latestPrice = _props$stock.latestPrice,
+      marketOpen = _props$stock.marketOpen;
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+    'div',
+    { className: 'portfolio-list-item' },
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'span',
+      null,
+      tickerSymbol,
+      ' - ',
+      numberOfSharesOwned,
+      ' Shares'
+    ),
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'span',
+      {
+        className: latestPrice > marketOpen && 'priceUp' || latestPrice < marketOpen && 'priceDown' || latestPrice === marketOpen && 'priceEven'
+      },
+      'Current Price: $',
+      props.stock.latestPrice
+    )
+  );
+};
+
+/***/ }),
+
+/***/ "./client/PortfolioTable.js":
+/*!**********************************!*\
+  !*** ./client/PortfolioTable.js ***!
+  \**********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -673,9 +752,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _PortfolioListItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PortfolioListItem */ "./client/PortfolioListItem.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -686,131 +764,42 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var PortfolioListItem = function (_React$Component) {
-  _inherits(PortfolioListItem, _React$Component);
+//Components
 
-  function PortfolioListItem() {
-    _classCallCheck(this, PortfolioListItem);
 
-    var _this = _possibleConstructorReturn(this, (PortfolioListItem.__proto__ || Object.getPrototypeOf(PortfolioListItem)).call(this));
+var PortfolioTable = function (_React$Component) {
+  _inherits(PortfolioTable, _React$Component);
 
-    _this.state = {
-      marketOpen: 0,
-      latestPrice: 0
-    };
-    return _this;
+  function PortfolioTable() {
+    _classCallCheck(this, PortfolioTable);
+
+    return _possibleConstructorReturn(this, (PortfolioTable.__proto__ || Object.getPrototypeOf(PortfolioTable)).apply(this, arguments));
   }
 
-  _createClass(PortfolioListItem, [{
-    key: 'componentDidMount',
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _ref2, data, marketOpen, latestPrice;
-
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/stocks/' + this.props.stock.tickerSymbol);
-
-              case 2:
-                _ref2 = _context.sent;
-                data = _ref2.data;
-                marketOpen = data.open;
-                latestPrice = data.latestPrice;
-
-
-                this.setState({
-                  marketOpen: marketOpen,
-                  latestPrice: latestPrice
-                });
-
-                //Interval on price update here?
-
-              case 7:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function componentDidMount() {
-        return _ref.apply(this, arguments);
-      }
-
-      return componentDidMount;
-    }()
-  }, {
+  _createClass(PortfolioTable, [{
     key: 'render',
     value: function render() {
-      var _state = this.state,
-          latestPrice = _state.latestPrice,
-          marketOpen = _state.marketOpen;
-
+      var totalValue = 0;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'div',
-        { className: 'portfolio-list-item' },
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-          'span',
-          null,
-          this.props.stock.tickerSymbol,
-          ' -',
-          ' ',
-          this.props.stock.numberOfSharesOwned,
-          ' Shares'
-        ),
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-          'span',
-          {
-            className: latestPrice > marketOpen && 'priceUp' || latestPrice < marketOpen && 'priceDown' || latestPrice === marketOpen && 'priceEven'
-          },
-          this.state.latestPrice
-        )
+        { className: 'table-container' },
+        this.props.stocks.map(function (stock, i) {
+          totalValue += stock.latestPrice * stock.numberOfSharesOwned;
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            { key: i },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PortfolioListItem__WEBPACK_IMPORTED_MODULE_2__["PortfolioListItem"], { stock: stock }),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null)
+          );
+        })
       );
     }
   }]);
 
-  return PortfolioListItem;
+  return PortfolioTable;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["default"] = (PortfolioListItem);
-
-/***/ }),
-
-/***/ "./client/PortfolioTable.js":
-/*!**********************************!*\
-  !*** ./client/PortfolioTable.js ***!
-  \**********************************/
-/*! exports provided: PortfolioTable */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortfolioTable", function() { return PortfolioTable; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _PortfolioListItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PortfolioListItem */ "./client/PortfolioListItem.js");
-
-
-//Components
-
-
-var PortfolioTable = function PortfolioTable(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-    'div',
-    { className: 'table-container' },
-    props.stocks.map(function (stock, i) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        'div',
-        { key: i },
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PortfolioListItem__WEBPACK_IMPORTED_MODULE_1__["default"], { stock: stock }),
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null)
-      );
-    })
-  );
-};
+/* harmony default export */ __webpack_exports__["default"] = (PortfolioTable);
 
 /***/ }),
 
