@@ -138,6 +138,7 @@ var App = function (_React$Component) {
     _this.state = {
       user: null
     };
+    _this.updateBalance = _this.updateBalance.bind(_this);
     return _this;
   }
 
@@ -147,6 +148,7 @@ var App = function (_React$Component) {
       var newBalance = isDecrease ? this.state.user.balance - amount : this.state.user.balance + amount;
 
       var user = {
+        id: this.state.user.id,
         email: this.state.user.email,
         balance: newBalance
       };
@@ -282,7 +284,7 @@ var App = function (_React$Component) {
               component: function component() {
                 return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Portfolio__WEBPACK_IMPORTED_MODULE_5__["default"], {
                   userId: _this2.state.user && _this2.state.user.id,
-                  updateBalance: _this2.updateBalance.bind(_this2)
+                  updateBalance: _this2.updateBalance
                 });
               }
             }),
@@ -658,7 +660,7 @@ var Portfolio = function (_React$Component) {
                 });
 
               case 2:
-                _this.props.updateBalance(true, pricePerShare * numberOfShares);
+                _this.props.updateBalance(true, pricePerShare * numberOfShares * 100);
                 _context3.next = 5;
                 return _this.retrievePortfolio();
 

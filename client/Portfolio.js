@@ -44,7 +44,7 @@ export default class Portfolio extends React.Component {
       tickerSymbol,
       numberOfShares,
     });
-    this.props.updateBalance(true, pricePerShare * numberOfShares);
+    this.props.updateBalance(true, pricePerShare * numberOfShares * 100);
     await this.retrievePortfolio();
   };
 

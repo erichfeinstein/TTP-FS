@@ -17,6 +17,7 @@ export default class App extends React.Component {
     this.state = {
       user: null,
     };
+    this.updateBalance = this.updateBalance.bind(this);
   }
 
   updateBalance(isDecrease, amount) {
@@ -25,6 +26,7 @@ export default class App extends React.Component {
       : this.state.user.balance + amount;
 
     const user = {
+      id: this.state.user.id,
       email: this.state.user.email,
       balance: newBalance,
     };
@@ -85,7 +87,7 @@ export default class App extends React.Component {
               component={() => (
                 <Portfolio
                   userId={this.state.user && this.state.user.id}
-                  updateBalance={this.updateBalance.bind(this)}
+                  updateBalance={this.updateBalance}
                 />
               )}
             />
