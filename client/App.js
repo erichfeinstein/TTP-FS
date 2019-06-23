@@ -50,7 +50,8 @@ export default class App extends React.Component {
         <div id="nav-bar">
           <div>
             <span>
-              {this.state.user && `$${Number(this.state.user.balance) / 100}`}
+              {this.state.user &&
+                `$${(Number(this.state.user.balance) / 100).toFixed(2)}`}
             </span>
           </div>
           <div>

@@ -209,7 +209,7 @@ var App = function (_React$Component) {
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
               'span',
               null,
-              this.state.user && '$' + Number(this.state.user.balance) / 100
+              this.state.user && '$' + (Number(this.state.user.balance) / 100).toFixed(2)
             )
           ),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -873,6 +873,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/* eslint-disable react/button-has-type */
+/* eslint-disable complexity */
 
 
 
@@ -886,9 +888,10 @@ var Purchase = function (_React$Component) {
 
     _this.state = {
       tickerSymbol: '',
-      numberOfShares: 0,
+      numberOfShares: 1,
       tickerSymbolError: false,
       insufficientFundsError: false,
+      nonPositiveIntegerError: false,
       stockInfo: null
     };
     return _this;
@@ -992,12 +995,14 @@ var Purchase = function (_React$Component) {
         ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', {
+          type: 'number',
           placeholder: 'ex: 5',
           className: 'form-field',
+          value: this.state.numberOfShares,
           onChange: function onChange(evt) {
-            return _this2.setState({
+            _this2.setState({
               numberOfShares: evt.target.value,
-              insufficientFundsError: false
+              nonPositiveIntegerError: false
             });
           }
         }),
@@ -1012,12 +1017,21 @@ var Purchase = function (_React$Component) {
           ),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null)
         ),
+        this.state.nonPositiveIntegerError && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          'div',
+          null,
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            { className: 'error' },
+            'Error! Invalid Number of Shares'
+          ),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null)
+        ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'button',
           {
-            disabled: this.state.insufficientFundsError || this.state.tickerSymbolError,
+            disabled: this.state.insufficientFundsError || this.state.tickerSymbolError || this.state.nonPositiveIntegerError,
             onClick: _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-              var res;
               return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
                   switch (_context2.prev = _context2.next) {
@@ -1027,26 +1041,30 @@ var Purchase = function (_React$Component) {
                       return _this2.props.purchase(_this2.state.tickerSymbol, _this2.state.numberOfShares, _this2.state.stockInfo.latestPrice);
 
                     case 3:
-                      res = _context2.sent;
-                      _context2.next = 9;
+                      _context2.next = 8;
                       break;
 
-                    case 6:
-                      _context2.prev = 6;
+                    case 5:
+                      _context2.prev = 5;
                       _context2.t0 = _context2['catch'](0);
 
-                      if (_context2.t0.response && _context2.t0.response.status === 304) _this2.setState({
+                      if (_this2.state.tickerSymbol === '') _this2.setState({
+                        tickerSymbolError: true
+                      });else if (_context2.t0.response && _context2.t0.response.status === 304) _this2.setState({
                         insufficientFundsError: true
                       });else {
+                        _this2.setState({
+                          nonPositiveIntegerError: true
+                        });
                         console.error(_context2.t0);
                       }
 
-                    case 9:
+                    case 8:
                     case 'end':
                       return _context2.stop();
                   }
                 }
-              }, _callee2, _this2, [[0, 6]]);
+              }, _callee2, _this2, [[0, 5]]);
             }))
           },
           'Purchase'
@@ -1122,8 +1140,9 @@ var Transactions = function (_React$Component) {
                 this.setState({
                   purchases: data
                 });
+                console.log(data);
 
-              case 5:
+              case 6:
               case 'end':
                 return _context.stop();
             }
@@ -1142,11 +1161,36 @@ var Transactions = function (_React$Component) {
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'div',
-        { id: 'transactions-container' },
+        null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'h2',
           null,
           'Transactions'
+        ),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          'div',
+          { id: 'transactions-container' },
+          this.state.purchases.map(function (purchase) {
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              'div',
+              null,
+              react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+                'div',
+                { className: 'transaction-list-item' },
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+                  'span',
+                  null,
+                  'BUY (' + purchase.tickerSymbol + ') - ' + purchase.numberOfShares + ' Shares'
+                ),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+                  'span',
+                  null,
+                  '@ $' + purchase.pricePurchasedAt / 100
+                )
+              ),
+              react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null)
+            );
+          })
         )
       );
     }

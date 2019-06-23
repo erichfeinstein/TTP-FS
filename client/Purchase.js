@@ -1,3 +1,5 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable complexity */
 import React from 'react';
 import axios from 'axios';
 
@@ -6,9 +8,10 @@ export default class Purchase extends React.Component {
     super();
     this.state = {
       tickerSymbol: '',
-      numberOfShares: 0,
+      numberOfShares: 1,
       tickerSymbolError: false,
       insufficientFundsError: false,
+      nonPositiveIntegerError: false,
       stockInfo: null,
     };
   }
@@ -65,14 +68,16 @@ export default class Purchase extends React.Component {
         <div>Number of Shares</div>
         <br />
         <input
+          type="number"
           placeholder="ex: 5"
           className="form-field"
-          onChange={evt =>
+          value={this.state.numberOfShares}
+          onChange={evt => {
             this.setState({
               numberOfShares: evt.target.value,
-              insufficientFundsError: false,
-            })
-          }
+              nonPositiveIntegerError: false,
+            });
+          }}
         />
         <br />
         {this.state.insufficientFundsError && (
@@ -81,23 +86,38 @@ export default class Purchase extends React.Component {
             <br />
           </div>
         )}
+        {this.state.nonPositiveIntegerError && (
+          <div>
+            <div className="error">Error! Invalid Number of Shares</div>
+            <br />
+          </div>
+        )}
         <button
           disabled={
-            this.state.insufficientFundsError || this.state.tickerSymbolError
+            this.state.insufficientFundsError ||
+            this.state.tickerSymbolError ||
+            this.state.nonPositiveIntegerError
           }
           onClick={async () => {
             try {
-              const res = await this.props.purchase(
+              await this.props.purchase(
                 this.state.tickerSymbol,
                 this.state.numberOfShares,
                 this.state.stockInfo.latestPrice
               );
             } catch (err) {
-              if (err.response && err.response.status === 304)
+              if (this.state.tickerSymbol === '')
+                this.setState({
+                  tickerSymbolError: true,
+                });
+              else if (err.response && err.response.status === 304)
                 this.setState({
                   insufficientFundsError: true,
                 });
               else {
+                this.setState({
+                  nonPositiveIntegerError: true,
+                });
                 console.error(err);
               }
             }
