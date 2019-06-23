@@ -9,7 +9,7 @@ const { getQuote } = require('../iex');
 router.post('/', async (req, res, next) => {
   try {
     if (req.user) {
-      const tickerSymbol = req.body.tickerSymbol;
+      const tickerSymbol = req.body.tickerSymbol.toUpperCase();
       const numberOfShares = req.body.numberOfShares;
       const { latestPrice } = await getQuote(tickerSymbol);
       //Ensure valid tickerSymbol

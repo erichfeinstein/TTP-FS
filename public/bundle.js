@@ -832,13 +832,18 @@ var PortfolioTable = function (_React$Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -852,10 +857,14 @@ var Purchase = function (_React$Component) {
 
     _this.state = {
       tickerSymbol: '',
-      numberOfShares: 0
+      numberOfShares: 0,
+      tickerSymbolError: false,
+      stockInfo: null
     };
     return _this;
   }
+
+  //   async componentWillMount() {}
 
   _createClass(Purchase, [{
     key: 'render',
@@ -879,13 +888,74 @@ var Purchase = function (_React$Component) {
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', {
           placeholder: 'ex: AAPL',
           className: 'form-field',
+          onBlur: _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+            var _ref2, data;
+
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    if (!(_this2.state.tickerSymbol.length > 0)) {
+                      _context.next = 6;
+                      break;
+                    }
+
+                    _context.next = 3;
+                    return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/stocks/' + _this2.state.tickerSymbol);
+
+                  case 3:
+                    _ref2 = _context.sent;
+                    data = _ref2.data;
+
+                    if (data === -1) _this2.setState({
+                      tickerSymbolError: true,
+                      stockInfo: null
+                    });else {
+                      _this2.setState({
+                        tickerSymbolError: false,
+                        stockInfo: data
+                      });
+                    }
+
+                  case 6:
+                  case 'end':
+                    return _context.stop();
+                }
+              }
+            }, _callee, _this2);
+          })),
           onChange: function onChange(evt) {
-            return _this2.setState({
+            _this2.setState({
               tickerSymbol: evt.target.value
             });
           }
         }),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+        (this.state.tickerSymbolError || this.state.stockInfo) && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          'div',
+          { className: 'info-section' },
+          this.state.tickerSymbolError && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            { className: 'error' },
+            'Error! Stock Not Found'
+          ),
+          this.state.stockInfo && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            { className: 'info' },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              'span',
+              null,
+              this.state.stockInfo.companyName
+            ),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              'span',
+              null,
+              '$',
+              this.state.stockInfo.latestPrice
+            )
+          ),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null)
+        ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'div',
           null,
