@@ -89,7 +89,8 @@ export default class Purchase extends React.Component {
             try {
               const res = await this.props.purchase(
                 this.state.tickerSymbol,
-                this.state.numberOfShares
+                this.state.numberOfShares,
+                this.state.stockInfo.latestPrice
               );
             } catch (err) {
               if (err.response && err.response.status === 304)

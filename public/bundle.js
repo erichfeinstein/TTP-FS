@@ -142,6 +142,19 @@ var App = function (_React$Component) {
   }
 
   _createClass(App, [{
+    key: 'updateBalance',
+    value: function updateBalance(isDecrease, amount) {
+      var newBalance = isDecrease ? this.state.user.balance - amount : this.state.user.balance + amount;
+
+      var user = {
+        email: this.state.user.email,
+        balance: newBalance
+      };
+      this.setState({
+        user: user
+      });
+    }
+  }, {
     key: 'componentDidMount',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -159,7 +172,7 @@ var App = function (_React$Component) {
                 data = _ref2.data;
 
                 if (data) {
-                  history.push('/transactions');
+                  history.push('/portfolio');
                   this.setState({ user: data });
                 }
 
@@ -194,7 +207,16 @@ var App = function (_React$Component) {
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
               'span',
               null,
-              this.state.user && this.state.user.email
+              this.state.user && '$' + Number(this.state.user.balance) / 100
+            )
+          ),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            null,
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              'span',
+              null,
+              this.state.user && '' + this.state.user.email
             )
           ),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -258,7 +280,10 @@ var App = function (_React$Component) {
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
               path: '/portfolio',
               component: function component() {
-                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Portfolio__WEBPACK_IMPORTED_MODULE_5__["default"], { userId: _this2.state.user && _this2.state.user.id });
+                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Portfolio__WEBPACK_IMPORTED_MODULE_5__["default"], {
+                  userId: _this2.state.user && _this2.state.user.id,
+                  updateBalance: _this2.updateBalance.bind(_this2)
+                });
               }
             }),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
@@ -621,6 +646,7 @@ var Portfolio = function (_React$Component) {
 
     _this.purchase = function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(tickerSymbol, numberOfShares) {
+        var pricePerShare = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -632,10 +658,11 @@ var Portfolio = function (_React$Component) {
                 });
 
               case 2:
-                _context3.next = 4;
+                _this.props.updateBalance(true, pricePerShare * numberOfShares);
+                _context3.next = 5;
                 return _this.retrievePortfolio();
 
-              case 4:
+              case 5:
               case 'end':
                 return _context3.stop();
             }
@@ -643,7 +670,7 @@ var Portfolio = function (_React$Component) {
         }, _callee3, _this2);
       }));
 
-      return function (_x2, _x3) {
+      return function (_x3, _x4) {
         return _ref4.apply(this, arguments);
       };
     }();
@@ -995,7 +1022,7 @@ var Purchase = function (_React$Component) {
                     case 0:
                       _context2.prev = 0;
                       _context2.next = 3;
-                      return _this2.props.purchase(_this2.state.tickerSymbol, _this2.state.numberOfShares);
+                      return _this2.props.purchase(_this2.state.tickerSymbol, _this2.state.numberOfShares, _this2.state.stockInfo.latestPrice);
 
                     case 3:
                       res = _context2.sent;

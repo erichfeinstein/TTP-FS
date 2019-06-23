@@ -42,7 +42,9 @@ router.post('/', async (req, res, next) => {
           },
         });
         if (existingStock) {
-          existingStock.numberOfSharesOwned += numberOfShares;
+          const newShareCount =
+            Number(existingStock.numberOfSharesOwned) + Number(numberOfShares);
+          existingStock.numberOfSharesOwned = newShareCount;
           await existingStock.save();
         } else {
           const newStock = await Stock.create({

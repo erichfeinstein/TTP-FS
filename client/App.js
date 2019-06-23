@@ -19,11 +19,25 @@ export default class App extends React.Component {
     };
   }
 
+  updateBalance(isDecrease, amount) {
+    const newBalance = isDecrease
+      ? this.state.user.balance - amount
+      : this.state.user.balance + amount;
+
+    const user = {
+      email: this.state.user.email,
+      balance: newBalance,
+    };
+    this.setState({
+      user,
+    });
+  }
+
   async componentDidMount() {
     //Attempt to find user
     const { data } = await axios.get('/auth/me');
     if (data) {
-      history.push('/transactions');
+      history.push('/portfolio');
       this.setState({ user: data });
     }
   }
@@ -33,7 +47,12 @@ export default class App extends React.Component {
       <Router history={history}>
         <div id="nav-bar">
           <div>
-            <span>{this.state.user && this.state.user.email}</span>
+            <span>
+              {this.state.user && `$${Number(this.state.user.balance) / 100}`}
+            </span>
+          </div>
+          <div>
+            <span>{this.state.user && `${this.state.user.email}`}</span>
           </div>
           <div>
             <Link to="/portfolio">Portfolio</Link>
@@ -64,7 +83,10 @@ export default class App extends React.Component {
             <Route
               path="/portfolio"
               component={() => (
-                <Portfolio userId={this.state.user && this.state.user.id} />
+                <Portfolio
+                  userId={this.state.user && this.state.user.id}
+                  updateBalance={this.updateBalance.bind(this)}
+                />
               )}
             />
             <Route
