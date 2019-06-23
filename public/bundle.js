@@ -100,8 +100,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _Transactions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Transactions */ "./client/Transactions.js");
-/* harmony import */ var _AuthForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AuthForm */ "./client/AuthForm.js");
+/* harmony import */ var history__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! history */ "./node_modules/history/esm/history.js");
+/* harmony import */ var _Transactions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Transactions */ "./client/Transactions.js");
+/* harmony import */ var _AuthForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./AuthForm */ "./client/AuthForm.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -115,6 +116,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
+//Util
+
+var history = Object(history__WEBPACK_IMPORTED_MODULE_3__["createBrowserHistory"])();
 
 //Components
 
@@ -151,7 +156,10 @@ var App = function (_React$Component) {
                 _ref2 = _context.sent;
                 data = _ref2.data;
 
-                console.log(data);
+                if (data) {
+                  history.push('/transactions');
+                  this.setState({ user: data });
+                }
 
               case 5:
               case 'end':
@@ -171,8 +179,8 @@ var App = function (_React$Component) {
     key: 'render',
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["BrowserRouter"],
-        null,
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Router"],
+        { history: history },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'div',
           { id: 'nav-bar' },
@@ -193,10 +201,27 @@ var App = function (_React$Component) {
               { to: '/transactions/' },
               'Transactions'
             )
+          ),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            null,
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+              { to: '/signup/' },
+              'Sign Up'
+            )
+          ),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            null,
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+              { to: '/login/' },
+              'Log In'
+            )
           )
         ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_4__["default"], null),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'div',
           { id: 'main' },
@@ -206,7 +231,25 @@ var App = function (_React$Component) {
             'Stocks App'
           ),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null),
-          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], { path: '/transactions/', component: _Transactions__WEBPACK_IMPORTED_MODULE_3__["default"] })
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"],
+            null,
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+              exact: true,
+              path: '/login',
+              component: function component() {
+                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_5__["default"], { isLogin: true });
+              }
+            }),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+              exact: true,
+              path: '/signup',
+              component: function component() {
+                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_5__["default"], { isLogin: false });
+              }
+            }),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], { exact: true, path: '/transactions', component: _Transactions__WEBPACK_IMPORTED_MODULE_4__["default"] })
+          )
         )
       );
     }
@@ -341,7 +384,6 @@ var AuthForm = function (_React$Component) {
     }();
 
     _this.state = {
-      isLogin: false,
       email: '',
       password: '',
       passwordReEnter: ''
@@ -354,31 +396,16 @@ var AuthForm = function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
-      var passwordsMatch = this.state.password === this.state.passwordReEnter && !this.state.isLogin;
+      var isLogin = this.props.isLogin;
+
+      var passwordsMatch = this.state.password === this.state.passwordReEnter && !isLogin;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'div',
         { id: 'auth-form' },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-          'div',
-          { style: { display: 'flex', justifyContent: 'space-between' } },
-          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'h2',
-            null,
-            this.state.isLogin ? 'Log In' : 'Sign Up'
-          ),
-          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'button',
-            {
-              onClick: function onClick() {
-                return _this3.setState({
-                  isLogin: !_this3.state.isLogin
-                });
-              },
-              className: 'button'
-            },
-            'Switch to ',
-            this.state.isLogin ? 'Sign Up' : 'Log In'
-          )
+          'h2',
+          null,
+          isLogin ? 'Log In' : 'Sign Up'
         ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -422,7 +449,7 @@ var AuthForm = function (_React$Component) {
           })
         ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
-        this.state.isLogin ? null : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        isLogin ? null : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'div',
           null,
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -451,13 +478,13 @@ var AuthForm = function (_React$Component) {
           'button',
           {
             className: 'button',
-            onClick: this.state.isLogin ? function () {
+            onClick: isLogin ? function () {
               return _this3.login(_this3.state.email, _this3.state.password);
             } : function () {
               return _this3.signup(_this3.state.email, _this3.state.password);
             }
           },
-          this.state.isLogin ? 'Log In' : 'Sign Up'
+          isLogin ? 'Log In' : 'Sign Up'
         )
       );
     }

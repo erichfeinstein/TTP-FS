@@ -1,6 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Router, Route, Link, Switch } from 'react-router-dom';
 import axios from 'axios';
+
+//Util
+import { createBrowserHistory } from 'history';
+const history = createBrowserHistory();
 
 //Components
 import Transactions from './Transactions';
@@ -17,12 +21,15 @@ export default class App extends React.Component {
   async componentDidMount() {
     //Attempt to find user
     const { data } = await axios.get('/auth/me');
-    console.log(data);
+    if (data) {
+      history.push('/transactions');
+      this.setState({ user: data });
+    }
   }
 
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <div id="nav-bar">
           <div>
             <Link to="/portfolio">Portfolio</Link>
@@ -30,14 +37,31 @@ export default class App extends React.Component {
           <div>
             <Link to="/transactions/">Transactions</Link>
           </div>
+          <div>
+            <Link to="/signup/">Sign Up</Link>
+          </div>
+          <div>
+            <Link to="/login/">Log In</Link>
+          </div>
         </div>
         <br />
-        <AuthForm />
         <div id="main">
           <h1 id="title">Stocks App</h1>
           <hr />
           {/* <Route path="/portfolio" component={Portfolio} /> */}
-          <Route path="/transactions/" component={Transactions} />
+          <Switch>
+            <Route
+              exact
+              path="/login"
+              component={() => <AuthForm isLogin={true} />}
+            />
+            <Route
+              exact
+              path="/signup"
+              component={() => <AuthForm isLogin={false} />}
+            />
+            <Route exact path="/transactions" component={Transactions} />
+          </Switch>
         </div>
       </Router>
     );

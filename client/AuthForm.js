@@ -6,20 +6,21 @@ export default class AuthForm extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLogin: false,
       email: '',
       password: '',
       passwordReEnter: '',
     };
   }
+
   render() {
+    const { isLogin } = this.props;
     const passwordsMatch =
-      this.state.password === this.state.passwordReEnter && !this.state.isLogin;
+      this.state.password === this.state.passwordReEnter && !isLogin;
     return (
       <div id="auth-form">
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h2>{this.state.isLogin ? 'Log In' : 'Sign Up'}</h2>
-          <button
+        {/* <div style={{ display: 'flex', justifyContent: 'space-between' }}> */}
+        <h2>{isLogin ? 'Log In' : 'Sign Up'}</h2>
+        {/* <button
             onClick={() =>
               this.setState({
                 isLogin: !this.state.isLogin,
@@ -27,9 +28,11 @@ export default class AuthForm extends React.Component {
             }
             className="button"
           >
-            Switch to {this.state.isLogin ? 'Sign Up' : 'Log In'}
-          </button>
-        </div>
+            {this.state.isLogin
+              ? 'Create a New Account'
+              : 'Already Have an Account? Log In'}
+          </button> */}
+        {/* </div> */}
         <br />
         <div>
           <div>Email</div>
@@ -60,7 +63,7 @@ export default class AuthForm extends React.Component {
           />
         </div>
         <br />
-        {this.state.isLogin ? null : (
+        {isLogin ? null : (
           <div>
             <div>Re-Enter Password</div>
             {!passwordsMatch &&
@@ -84,12 +87,12 @@ export default class AuthForm extends React.Component {
         <button
           className="button"
           onClick={
-            this.state.isLogin
+            isLogin
               ? () => this.login(this.state.email, this.state.password)
               : () => this.signup(this.state.email, this.state.password)
           }
         >
-          {this.state.isLogin ? 'Log In' : 'Sign Up'}
+          {isLogin ? 'Log In' : 'Sign Up'}
         </button>
       </div>
     );
