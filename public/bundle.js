@@ -859,12 +859,11 @@ var Purchase = function (_React$Component) {
       tickerSymbol: '',
       numberOfShares: 0,
       tickerSymbolError: false,
+      insufficientFundsError: false,
       stockInfo: null
     };
     return _this;
   }
-
-  //   async componentWillMount() {}
 
   _createClass(Purchase, [{
     key: 'render',
@@ -926,7 +925,8 @@ var Purchase = function (_React$Component) {
           })),
           onChange: function onChange(evt) {
             _this2.setState({
-              tickerSymbol: evt.target.value
+              tickerSymbol: evt.target.value,
+              insufficientFundsError: false
             });
           }
         }),
@@ -967,17 +967,58 @@ var Purchase = function (_React$Component) {
           className: 'form-field',
           onChange: function onChange(evt) {
             return _this2.setState({
-              numberOfShares: evt.target.value
+              numberOfShares: evt.target.value,
+              insufficientFundsError: false
             });
           }
         }),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+        this.state.insufficientFundsError && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          'div',
+          null,
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            { className: 'error' },
+            'Error! Insufficient Funds'
+          ),
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null)
+        ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'button',
           {
-            onClick: function onClick() {
-              return _this2.props.purchase(_this2.state.tickerSymbol, _this2.state.numberOfShares);
-            }
+            disabled: this.state.insufficientFundsError || this.state.tickerSymbolError,
+            onClick: _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+              var res;
+              return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                  switch (_context2.prev = _context2.next) {
+                    case 0:
+                      _context2.prev = 0;
+                      _context2.next = 3;
+                      return _this2.props.purchase(_this2.state.tickerSymbol, _this2.state.numberOfShares);
+
+                    case 3:
+                      res = _context2.sent;
+                      _context2.next = 9;
+                      break;
+
+                    case 6:
+                      _context2.prev = 6;
+                      _context2.t0 = _context2['catch'](0);
+
+                      if (_context2.t0.response && _context2.t0.response.status === 304) _this2.setState({
+                        insufficientFundsError: true
+                      });else {
+                        console.error(_context2.t0);
+                      }
+
+                    case 9:
+                    case 'end':
+                      return _context2.stop();
+                  }
+                }
+              }, _callee2, _this2, [[0, 6]]);
+            }))
           },
           'Purchase'
         )

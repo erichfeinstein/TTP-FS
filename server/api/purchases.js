@@ -15,33 +15,44 @@ router.post('/', async (req, res, next) => {
       //Ensure valid tickerSymbol
       if (latestPrice < 0) throw new Error('Bad ticker symbol!');
 
-      //Create a purchase for purchase history
-      const purchase = await Purchase.create({
-        tickerSymbol,
-        numberOfShares,
-        pricePurchasedAt: latestPrice * 100, //Adjust for cents
-      });
+      //Verify user has enough balance
       const userId = req.user.id;
-      purchase.setUser(await User.findById(userId));
-
-      //Update the user's share count in this stock (this makes it easier to sell stock later)
-      const existingStock = await Stock.findOne({
-        where: {
-          tickerSymbol,
-          userId,
-        },
-      });
-      if (existingStock) {
-        existingStock.numberOfSharesOwned += numberOfShares;
-        await existingStock.save();
+      const user = await User.findById(userId);
+      if (user.balance < numberOfShares * latestPrice * 100) {
+        res.status(304).send('Not enough funds to purchase!');
       } else {
-        const newStock = await Stock.create({
+        //Update user balance
+        user.balance -= numberOfShares * latestPrice * 100;
+        user.save();
+
+        //Create a purchase for purchase history
+        const purchase = await Purchase.create({
           tickerSymbol,
-          numberOfSharesOwned: numberOfShares,
+          numberOfShares,
+          pricePurchasedAt: latestPrice * 100, //Adjust for cents
         });
-        newStock.setUser(await User.findById(userId));
+
+        purchase.setUser(user);
+
+        //Update the user's share count in this stock (this makes it easier to sell stock later)
+        const existingStock = await Stock.findOne({
+          where: {
+            tickerSymbol,
+            userId,
+          },
+        });
+        if (existingStock) {
+          existingStock.numberOfSharesOwned += numberOfShares;
+          await existingStock.save();
+        } else {
+          const newStock = await Stock.create({
+            tickerSymbol,
+            numberOfSharesOwned: numberOfShares,
+          });
+          newStock.setUser(user);
+        }
+        res.status(201).send('Successfully purchased');
       }
-      res.status(201).send('Successfully purchased');
     } else {
       res.send('You must be signed in to purchase');
     }

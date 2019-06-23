@@ -13,21 +13,8 @@ const getQuote = async tickerSymbol => {
     );
     return data;
   } catch (error) {
-    console.error('Error! Bad ticker symbol');
     return -1;
   }
 };
-
-// const getIntradayPrices = async tickerSymbol => {
-//   try {
-//     const { data } = await axios.get(
-//       URL + `/stable/stock/${tickerSymbol}/intraday-prices?token=${token}`
-//     );
-//     return data;
-//   } catch (error) {
-//     console.error('Error! Bad ticker symbol');
-//     return -1;
-//   }
-// };
 
 module.exports = { getQuote };

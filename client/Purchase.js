@@ -8,11 +8,10 @@ export default class Purchase extends React.Component {
       tickerSymbol: '',
       numberOfShares: 0,
       tickerSymbolError: false,
+      insufficientFundsError: false,
       stockInfo: null,
     };
   }
-
-  //   async componentWillMount() {}
 
   render() {
     return (
@@ -44,6 +43,7 @@ export default class Purchase extends React.Component {
           onChange={evt => {
             this.setState({
               tickerSymbol: evt.target.value,
+              insufficientFundsError: false,
             });
           }}
         />
@@ -70,17 +70,37 @@ export default class Purchase extends React.Component {
           onChange={evt =>
             this.setState({
               numberOfShares: evt.target.value,
+              insufficientFundsError: false,
             })
           }
         />
         <br />
+        {this.state.insufficientFundsError && (
+          <div>
+            <div className="error">Error! Insufficient Funds</div>
+            <br />
+          </div>
+        )}
         <button
-          onClick={() =>
-            this.props.purchase(
-              this.state.tickerSymbol,
-              this.state.numberOfShares
-            )
+          disabled={
+            this.state.insufficientFundsError || this.state.tickerSymbolError
           }
+          onClick={async () => {
+            try {
+              const res = await this.props.purchase(
+                this.state.tickerSymbol,
+                this.state.numberOfShares
+              );
+            } catch (err) {
+              if (err.response && err.response.status === 304)
+                this.setState({
+                  insufficientFundsError: true,
+                });
+              else {
+                console.error(err);
+              }
+            }
+          }}
         >
           Purchase
         </button>
