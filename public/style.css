@@ -79,7 +79,9 @@ body {
 .portfolio-list-item {
   padding: 0.5rem;
   font-weight: bold;
+  text-align: left;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 .priceUp {

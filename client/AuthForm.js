@@ -9,6 +9,7 @@ export default class AuthForm extends React.Component {
       email: '',
       password: '',
       passwordReEnter: '',
+      userAlreadyExistsError: false,
     };
   }
 
@@ -30,9 +31,18 @@ export default class AuthForm extends React.Component {
             onChange={evt =>
               this.setState({
                 email: evt.target.value,
+                userAlreadyExistsError: false,
               })
             }
           />
+          {this.state.userAlreadyExistsError && (
+            <div>
+              <br />
+              <div className="error">
+                Error! User with this email already exists!
+              </div>
+            </div>
+          )}
         </div>
         <br />
         <div>
@@ -55,7 +65,10 @@ export default class AuthForm extends React.Component {
             {!passwordsMatch &&
               this.state.password.length >= 1 &&
               this.state.passwordReEnter >= 1 && (
-                <div className="error">Passwords must match!</div>
+                <div>
+                  <br />
+                  <div className="error">Passwords must match!</div>
+                </div>
               )}
             <br />
             <input
@@ -71,6 +84,7 @@ export default class AuthForm extends React.Component {
         )}
         <br />
         <button
+          disabled={!passwordsMatch && !isLogin}
           className="button"
           onClick={
             isLogin
@@ -89,7 +103,8 @@ export default class AuthForm extends React.Component {
         email,
         password,
       });
-      console.log(data);
+      this.props.setUser(data);
+      this.props.history.push('/portfolio');
     } catch (error) {
       console.error(error);
     }
@@ -100,9 +115,14 @@ export default class AuthForm extends React.Component {
         email,
         password,
       });
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+
+      this.props.setUser(data);
+      this.props.history.push('/portfolio');
+    } catch (err) {
+      if (err.response && err.response.status === 409)
+        this.setState({
+          userAlreadyExistsError: true,
+        });
     }
   };
 }

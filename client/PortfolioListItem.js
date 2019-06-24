@@ -7,21 +7,19 @@ export const PortfolioListItem = props => {
     latestPrice,
     marketOpen,
   } = props.stock;
+  const fontColor =
+    (latestPrice > marketOpen && 'priceUp') ||
+    (latestPrice < marketOpen && 'priceDown') ||
+    (latestPrice === marketOpen && 'priceEven');
   return (
-    <div className="portfolio-list-item">
+    <div className={`portfolio-list-item ${fontColor}`}>
       <span>
         {tickerSymbol}
         {' - '}
         {numberOfSharesOwned} Shares
       </span>
-      <span
-        className={
-          (latestPrice > marketOpen && 'priceUp') ||
-          (latestPrice < marketOpen && 'priceDown') ||
-          (latestPrice === marketOpen && 'priceEven')
-        }
-      >
-        Current Price: ${props.stock.latestPrice}
+      <span>
+        Value: ${(props.stock.latestPrice * numberOfSharesOwned).toFixed(2)}
       </span>
     </div>
   );

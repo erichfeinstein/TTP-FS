@@ -139,10 +139,18 @@ var App = function (_React$Component) {
       user: null
     };
     _this.updateBalance = _this.updateBalance.bind(_this);
+    _this.setUser = _this.setUser.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
+    key: 'setUser',
+    value: function setUser(user) {
+      this.setState({
+        user: user
+      });
+    }
+  }, {
     key: 'updateBalance',
     value: function updateBalance(isDecrease, amount) {
       var newBalance = isDecrease ? this.state.user.balance - amount : this.state.user.balance + amount;
@@ -269,14 +277,22 @@ var App = function (_React$Component) {
               exact: true,
               path: '/login',
               component: function component() {
-                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], { isLogin: true });
+                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], {
+                  history: history,
+                  setUser: _this2.setUser,
+                  isLogin: true
+                });
               }
             }),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
               exact: true,
               path: '/signup',
               component: function component() {
-                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], { isLogin: false });
+                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], {
+                  history: history,
+                  setUser: _this2.setUser,
+                  isLogin: false
+                });
               }
             }),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
@@ -364,22 +380,23 @@ var AuthForm = function (_React$Component) {
                 _ref2 = _context.sent;
                 data = _ref2.data;
 
-                console.log(data);
-                _context.next = 11;
+                _this.props.setUser(data);
+                _this.props.history.push('/portfolio');
+                _context.next = 12;
                 break;
 
-              case 8:
-                _context.prev = 8;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context['catch'](0);
 
                 console.error(_context.t0);
 
-              case 11:
+              case 12:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[0, 8]]);
+        }, _callee, _this2, [[0, 9]]);
       }));
 
       return function (_x, _x2) {
@@ -406,22 +423,26 @@ var AuthForm = function (_React$Component) {
                 _ref4 = _context2.sent;
                 data = _ref4.data;
 
-                console.log(data);
-                _context2.next = 11;
+
+                _this.props.setUser(data);
+                _this.props.history.push('/portfolio');
+                _context2.next = 12;
                 break;
 
-              case 8:
-                _context2.prev = 8;
+              case 9:
+                _context2.prev = 9;
                 _context2.t0 = _context2['catch'](0);
 
-                console.error(_context2.t0);
+                if (_context2.t0.response && _context2.t0.response.status === 409) _this.setState({
+                  userAlreadyExistsError: true
+                });
 
-              case 11:
+              case 12:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, _this2, [[0, 8]]);
+        }, _callee2, _this2, [[0, 9]]);
       }));
 
       return function (_x3, _x4) {
@@ -432,7 +453,8 @@ var AuthForm = function (_React$Component) {
     _this.state = {
       email: '',
       password: '',
-      passwordReEnter: ''
+      passwordReEnter: '',
+      userAlreadyExistsError: false
     };
     return _this;
   }
@@ -469,10 +491,21 @@ var AuthForm = function (_React$Component) {
             value: this.state.email,
             onChange: function onChange(evt) {
               return _this3.setState({
-                email: evt.target.value
+                email: evt.target.value,
+                userAlreadyExistsError: false
               });
             }
-          })
+          }),
+          this.state.userAlreadyExistsError && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            null,
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              'div',
+              { className: 'error' },
+              'Error! User with this email already exists!'
+            )
+          )
         ),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
@@ -505,8 +538,13 @@ var AuthForm = function (_React$Component) {
           ),
           !passwordsMatch && this.state.password.length >= 1 && this.state.passwordReEnter >= 1 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
             'div',
-            { className: 'error' },
-            'Passwords must match!'
+            null,
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              'div',
+              { className: 'error' },
+              'Passwords must match!'
+            )
           ),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', {
@@ -523,6 +561,7 @@ var AuthForm = function (_React$Component) {
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'button',
           {
+            disabled: !passwordsMatch && !isLogin,
             className: 'button',
             onClick: isLogin ? function () {
               return _this3.login(_this3.state.email, _this3.state.password);
@@ -754,9 +793,10 @@ var PortfolioListItem = function PortfolioListItem(props) {
       latestPrice = _props$stock.latestPrice,
       marketOpen = _props$stock.marketOpen;
 
+  var fontColor = latestPrice > marketOpen && 'priceUp' || latestPrice < marketOpen && 'priceDown' || latestPrice === marketOpen && 'priceEven';
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
     'div',
-    { className: 'portfolio-list-item' },
+    { className: 'portfolio-list-item ' + fontColor },
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
       'span',
       null,
@@ -767,11 +807,9 @@ var PortfolioListItem = function PortfolioListItem(props) {
     ),
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
       'span',
-      {
-        className: latestPrice > marketOpen && 'priceUp' || latestPrice < marketOpen && 'priceDown' || latestPrice === marketOpen && 'priceEven'
-      },
-      'Current Price: $',
-      props.stock.latestPrice
+      null,
+      'Value: $',
+      (props.stock.latestPrice * numberOfSharesOwned).toFixed(2)
     )
   );
 };

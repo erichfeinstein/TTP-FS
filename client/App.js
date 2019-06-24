@@ -18,6 +18,13 @@ export default class App extends React.Component {
       user: null,
     };
     this.updateBalance = this.updateBalance.bind(this);
+    this.setUser = this.setUser.bind(this);
+  }
+
+  setUser(user) {
+    this.setState({
+      user,
+    });
   }
 
   updateBalance(isDecrease, amount) {
@@ -76,12 +83,24 @@ export default class App extends React.Component {
             <Route
               exact
               path="/login"
-              component={() => <AuthForm isLogin={true} />}
+              component={() => (
+                <AuthForm
+                  history={history}
+                  setUser={this.setUser}
+                  isLogin={true}
+                />
+              )}
             />
             <Route
               exact
               path="/signup"
-              component={() => <AuthForm isLogin={false} />}
+              component={() => (
+                <AuthForm
+                  history={history}
+                  setUser={this.setUser}
+                  isLogin={false}
+                />
+              )}
             />
             <Route
               path="/portfolio"
