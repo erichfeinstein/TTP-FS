@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable complexity */
 import React from 'react';
 import axios from 'axios';
@@ -10,6 +11,7 @@ export default class AuthForm extends React.Component {
       password: '',
       passwordReEnter: '',
       userAlreadyExistsError: false,
+      badCredentialsError: false,
     };
   }
 
@@ -32,6 +34,7 @@ export default class AuthForm extends React.Component {
               this.setState({
                 email: evt.target.value,
                 userAlreadyExistsError: false,
+                badCredentialsError: false,
               })
             }
           />
@@ -54,6 +57,7 @@ export default class AuthForm extends React.Component {
             onChange={evt =>
               this.setState({
                 password: evt.target.value,
+                badCredentialsError: false,
               })
             }
           />
@@ -82,6 +86,12 @@ export default class AuthForm extends React.Component {
             />
           </div>
         )}
+        {this.state.badCredentialsError && (
+          <div>
+            <br />
+            <div className="error">Invalid email or password!</div>
+          </div>
+        )}
         <br />
         <button
           disabled={!passwordsMatch && !isLogin}
@@ -106,6 +116,10 @@ export default class AuthForm extends React.Component {
       this.props.setUser(data);
       this.props.history.push('/portfolio');
     } catch (error) {
+      if (error.response && error.response.status === 401)
+        this.setState({
+          badCredentialsError: true,
+        });
       console.error(error);
     }
   };
@@ -118,8 +132,8 @@ export default class AuthForm extends React.Component {
 
       this.props.setUser(data);
       this.props.history.push('/portfolio');
-    } catch (err) {
-      if (err.response && err.response.status === 409)
+    } catch (error) {
+      if (error.response && error.response.status === 409)
         this.setState({
           userAlreadyExistsError: true,
         });

@@ -24,10 +24,13 @@ body {
 #main {
   margin: 2rem 4rem 4rem;
 }
-
 .form-field {
   font-size: 14pt;
   width: 100%;
+}
+#logout-modal-button-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* Auth Form */
