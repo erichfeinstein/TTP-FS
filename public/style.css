@@ -96,6 +96,11 @@ body {
 .priveEven {
   color: grey;
 }
+@media only screen and (max-width: 800px) {
+  #portfolio-page-container {
+    grid-template-columns: auto;
+  }
+}
 
 /* Transactions Page */
 #transactions-container {
