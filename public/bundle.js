@@ -108,6 +108,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var react_burger_menu__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-burger-menu */ "./node_modules/react-burger-menu/lib/BurgerMenu.js");
 /* harmony import */ var react_burger_menu__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_burger_menu__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Navbar */ "./client/Navbar.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -133,6 +134,7 @@ var history = Object(history__WEBPACK_IMPORTED_MODULE_3__["createBrowserHistory"
 
 
 //Other Components
+
 
 
 
@@ -289,97 +291,35 @@ var App = function (_React$Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Router"],
         { history: history },
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Navbar__WEBPACK_IMPORTED_MODULE_9__["Navbar"], {
+          isLoggedIn: isLoggedIn,
+          user: this.state.user,
+          openModal: this.openModal
+        }),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-          'div',
-          { id: 'nav-bar' },
-          isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'div',
+          react_modal__WEBPACK_IMPORTED_MODULE_7___default.a,
+          {
+            isOpen: this.state.isLogoutModalOpen,
+            onRequestClose: this.closeModal,
+            style: modalStyle
+          },
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'h2',
             null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-              { onClick: this.openModal },
-              'Log Out'
-            )
+            'Are you sure you want to log out?'
           ),
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            react_modal__WEBPACK_IMPORTED_MODULE_7___default.a,
-            {
-              isOpen: this.state.isLogoutModalOpen,
-              onRequestClose: this.closeModal,
-              style: modalStyle
-            },
+            'div',
+            { id: 'logout-modal-button-container' },
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              'h2',
-              null,
-              'Are you sure you want to log out?'
+              'button',
+              { onClick: this.closeModal },
+              'Cancel'
             ),
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              'div',
-              { id: 'logout-modal-button-container' },
-              react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-                'button',
-                { onClick: this.closeModal },
-                'Cancel'
-              ),
-              react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-                'button',
-                { onClick: this.logout },
-                'Log out'
-              )
-            )
-          ),
-          isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'div',
-            null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              'span',
-              null,
-              '$' + (Number(this.state.user.balance) / 100).toFixed(2)
-            )
-          ),
-          isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'div',
-            null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              'span',
-              null,
-              this.state.user.email
-            )
-          ),
-          isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'div',
-            null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-              { to: '/portfolio' },
-              'Portfolio'
-            )
-          ),
-          isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'div',
-            null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-              { to: '/transactions/' },
-              'Transactions'
-            )
-          ),
-          !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'div',
-            null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-              { to: '/signup/' },
-              'Sign Up'
-            )
-          ),
-          !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            'div',
-            null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-              react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-              { to: '/login/' },
-              'Log In'
+              'button',
+              { onClick: this.logout },
+              'Log out'
             )
           )
         ),
@@ -713,6 +653,98 @@ var AuthForm = function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (AuthForm);
+
+/***/ }),
+
+/***/ "./client/Navbar.js":
+/*!**************************!*\
+  !*** ./client/Navbar.js ***!
+  \**************************/
+/*! exports provided: Navbar */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Navbar", function() { return Navbar; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
+
+
+var Navbar = function Navbar(props) {
+  var isLoggedIn = props.isLoggedIn,
+      openModal = props.openModal,
+      user = props.user;
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+    'div',
+    { id: 'nav-bar' },
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        'span',
+        null,
+        user.email
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        'span',
+        null,
+        '$' + (Number(user.balance) / 100).toFixed(2)
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/portfolio' },
+        'Portfolio'
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/transactions/' },
+        'Transactions'
+      )
+    ),
+    !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/signup/' },
+        'Sign Up'
+      )
+    ),
+    !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/login/' },
+        'Log In'
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { onClick: openModal },
+        'Log Out'
+      )
+    )
+  );
+};
 
 /***/ }),
 

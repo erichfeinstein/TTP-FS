@@ -15,6 +15,7 @@ import AuthForm from './AuthForm';
 //Other Components
 import Modal from 'react-modal';
 import { slide as Menu } from 'react-burger-menu';
+import { Navbar } from './Navbar';
 
 //React-Modal
 const modalStyle = {
@@ -102,56 +103,22 @@ export default class App extends React.Component {
     const isLoggedIn = this.state.user && this.state.user.id;
     return (
       <Router history={history}>
-        <div id="nav-bar">
-          {isLoggedIn && (
-            <div>
-              <Link onClick={this.openModal}>Log Out</Link>
-            </div>
-          )}
-          <Modal
-            isOpen={this.state.isLogoutModalOpen}
-            onRequestClose={this.closeModal}
-            style={modalStyle}
-          >
-            <h2>Are you sure you want to log out?</h2>
-            <div id="logout-modal-button-container">
-              <button onClick={this.closeModal}>Cancel</button>
-              <button onClick={this.logout}>Log out</button>
-            </div>
-          </Modal>
-          {isLoggedIn && (
-            <div>
-              <span>
-                {`$${(Number(this.state.user.balance) / 100).toFixed(2)}`}
-              </span>
-            </div>
-          )}
-          {isLoggedIn && (
-            <div>
-              <span>{this.state.user.email}</span>
-            </div>
-          )}
-          {isLoggedIn && (
-            <div>
-              <Link to="/portfolio">Portfolio</Link>
-            </div>
-          )}
-          {isLoggedIn && (
-            <div>
-              <Link to="/transactions/">Transactions</Link>
-            </div>
-          )}
-          {!isLoggedIn && (
-            <div>
-              <Link to="/signup/">Sign Up</Link>
-            </div>
-          )}
-          {!isLoggedIn && (
-            <div>
-              <Link to="/login/">Log In</Link>
-            </div>
-          )}
-        </div>
+        <Navbar
+          isLoggedIn={isLoggedIn}
+          user={this.state.user}
+          openModal={this.openModal}
+        />
+        <Modal
+          isOpen={this.state.isLogoutModalOpen}
+          onRequestClose={this.closeModal}
+          style={modalStyle}
+        >
+          <h2>Are you sure you want to log out?</h2>
+          <div id="logout-modal-button-container">
+            <button onClick={this.closeModal}>Cancel</button>
+            <button onClick={this.logout}>Log out</button>
+          </div>
+        </Modal>
         <br />
         <div id="main">
           <Switch>
