@@ -2,7 +2,6 @@
 import React from 'react';
 import { Router, Route, Link, Switch } from 'react-router-dom';
 import axios from 'axios';
-import Modal from 'react-modal';
 
 //Util
 import { createBrowserHistory } from 'history';
@@ -12,6 +11,10 @@ const history = createBrowserHistory();
 import Transactions from './Transactions';
 import Portfolio from './Portfolio';
 import AuthForm from './AuthForm';
+
+//Other Components
+import Modal from 'react-modal';
+import { slide as Menu } from 'react-burger-menu';
 
 //React-Modal
 const modalStyle = {
@@ -24,7 +27,6 @@ const modalStyle = {
     transform: 'translate(-50%, -50%)',
   },
 };
-
 export default class App extends React.Component {
   constructor() {
     super();
