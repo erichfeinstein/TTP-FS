@@ -1206,7 +1206,8 @@ var Purchase = function (_React$Component) {
           onChange: function onChange(evt) {
             _this2.setState({
               numberOfShares: evt.target.value,
-              nonPositiveIntegerError: false
+              nonPositiveIntegerError: false,
+              insufficientFundsError: false
             });
           }
         }),

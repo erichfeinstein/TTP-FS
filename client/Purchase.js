@@ -76,6 +76,7 @@ export default class Purchase extends React.Component {
             this.setState({
               numberOfShares: evt.target.value,
               nonPositiveIntegerError: false,
+              insufficientFundsError: false,
             });
           }}
         />
