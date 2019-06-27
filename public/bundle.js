@@ -1344,9 +1344,8 @@ var Transactions = function (_React$Component) {
                 this.setState({
                   purchases: data
                 });
-                console.log(data);
 
-              case 6:
+              case 5:
               case 'end':
                 return _context.stop();
             }

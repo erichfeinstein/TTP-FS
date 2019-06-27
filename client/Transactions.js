@@ -16,7 +16,6 @@ export default class Transactions extends React.Component {
     this.setState({
       purchases: data,
     });
-    console.log(data);
   }
 
   render() {
