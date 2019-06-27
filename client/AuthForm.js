@@ -96,6 +96,7 @@ export default class AuthForm extends React.Component {
         <button
           disabled={!passwordsMatch && !isLogin}
           className="button"
+          // onKeyDown=
           onClick={
             isLogin
               ? () => this.login(this.state.email, this.state.password)

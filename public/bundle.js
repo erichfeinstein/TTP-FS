@@ -636,8 +636,9 @@ var AuthForm = function (_React$Component) {
           'button',
           {
             disabled: !passwordsMatch && !isLogin,
-            className: 'button',
-            onClick: isLogin ? function () {
+            className: 'button'
+            // onKeyDown=
+            , onClick: isLogin ? function () {
               return _this3.login(_this3.state.email, _this3.state.password);
             } : function () {
               return _this3.signup(_this3.state.email, _this3.state.password);
@@ -739,7 +740,7 @@ var Navbar = function Navbar(props) {
       null,
       react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-        { onClick: openModal },
+        { to: '/', onClick: openModal },
         'Log Out'
       )
     )
@@ -1335,10 +1336,11 @@ var Transactions = function (_React$Component) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/users/' + this.props.userId + '/purchases');
+                console.log(this.props.userId);
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/users/' + this.props.userId + '/transactions');
 
-              case 2:
+              case 3:
                 _ref2 = _context.sent;
                 data = _ref2.data;
 
@@ -1346,7 +1348,7 @@ var Transactions = function (_React$Component) {
                   purchases: data
                 });
 
-              case 5:
+              case 6:
               case 'end':
                 return _context.stop();
             }
@@ -1389,7 +1391,7 @@ var Transactions = function (_React$Component) {
                 react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
                   'span',
                   null,
-                  '@ $' + purchase.pricePurchasedAt / 100
+                  '@ $' + purchase.priceTradedAt / 100
                 )
               ),
               react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null)

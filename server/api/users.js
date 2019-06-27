@@ -1,27 +1,26 @@
 const router = require('express').Router();
-const sequelize = require('sequelize');
-const { Purchase, Stock, User } = require('../db/models');
+const { Transaction, Stock } = require('../db/models');
 module.exports = router;
 
-//Get a user's purchases (only your own for privacy reasons)
-router.get('/:id/purchases', async (req, res, next) => {
+//Get a user's transactions (only your own for privacy reasons)
+router.get('/:id/transactions', async (req, res, next) => {
   try {
     if (req.user) {
-      const purchases = await Purchase.findAll({
+      const transactions = await Transaction.findAll({
         where: {
           userId: req.params.id,
         },
       });
-      res.json(purchases);
+      res.json(transactions);
     } else {
-      res.send('You must be signed in to view purchases');
+      res.send('You must be signed in to view transactions');
     }
   } catch (error) {
     next(error);
   }
 });
 
-//Get a user's purchases (only your own for privacy reasons)
+//Get a user's portfolio (only your own for privacy reasons)
 router.get('/:id/portfolio', async (req, res, next) => {
   try {
     if (req.user) {
@@ -32,7 +31,7 @@ router.get('/:id/portfolio', async (req, res, next) => {
       });
       res.json(stocks);
     } else {
-      res.send('You must be signed in to view purchases');
+      res.send('You must be signed in to view portfolio');
     }
   } catch (error) {
     next(error);

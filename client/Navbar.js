@@ -37,7 +37,9 @@ export const Navbar = props => {
       )}
       {isLoggedIn && (
         <div>
-          <Link onClick={openModal}>Log Out</Link>
+          <Link to="/" onClick={openModal}>
+            Log Out
+          </Link>
         </div>
       )}
     </div>

@@ -1,14 +1,14 @@
 const User = require('./user');
-const Purchase = require('./purchase');
+const Transaction = require('./Transaction');
 const Stock = require('./stock');
 
-Purchase.belongsTo(User);
-User.hasMany(Purchase);
+Transaction.belongsTo(User);
+User.hasMany(Transaction);
 
 Stock.belongsTo(User);
 
 module.exports = {
   User,
-  Purchase,
+  Transaction,
   Stock,
 };

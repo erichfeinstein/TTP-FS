@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const Purchase = db.define('purchase', {
+const Transaction = db.define('transaction', {
   tickerSymbol: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -13,10 +13,10 @@ const Purchase = db.define('purchase', {
       min: 1, //Must buy at least one share
     },
   },
-  pricePurchasedAt: {
+  priceTradedAt: {
     type: Sequelize.INTEGER, //In cents
     allowNull: false,
   },
 });
 
-module.exports = Purchase;
+module.exports = Transaction;

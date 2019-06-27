@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const { Purchase, Stock, User } = require('../db/models');
+const { Transaction, Stock, User } = require('../db/models');
 module.exports = router;
 
 //IEX functions
 const { getQuote } = require('../iex');
 
-//Make a new stock purchase
+//Make a new stock transaction
 router.post('/', async (req, res, next) => {
   try {
     if (req.user) {
@@ -18,6 +18,8 @@ router.post('/', async (req, res, next) => {
       //Verify user has enough balance
       const userId = req.user.id;
       const user = await User.findById(userId);
+
+      //TODO add check if buy or sell
       if (user.balance < numberOfShares * latestPrice * 100) {
         res.status(304).send('Not enough funds to purchase!');
       } else {
@@ -25,14 +27,14 @@ router.post('/', async (req, res, next) => {
         user.balance -= numberOfShares * latestPrice * 100;
         user.save();
 
-        //Create a purchase for purchase history
-        const purchase = await Purchase.create({
+        //Create a transaction for transaction history
+        const transaction = await Transaction.create({
           tickerSymbol,
           numberOfShares,
-          pricePurchasedAt: latestPrice * 100, //Adjust for cents
+          priceTradedAt: latestPrice * 100, //Adjust for cents
         });
 
-        purchase.setUser(user);
+        transaction.setUser(user);
 
         //Update the user's share count in this stock (this makes it easier to sell stock later)
         const existingStock = await Stock.findOne({
@@ -53,10 +55,10 @@ router.post('/', async (req, res, next) => {
           });
           newStock.setUser(user);
         }
-        res.status(201).send('Successfully purchased');
+        res.status(201).send('Successfully traded');
       }
     } else {
-      res.send('You must be signed in to purchase');
+      res.send('You must be signed in to trade');
     }
   } catch (error) {
     next(error);

@@ -10,8 +10,9 @@ export default class Transactions extends React.Component {
   }
 
   async componentDidMount() {
+    console.log(this.props.userId);
     const { data } = await axios.get(
-      `/api/users/${this.props.userId}/purchases`
+      `/api/users/${this.props.userId}/transactions`
     );
     this.setState({
       purchases: data,
@@ -31,7 +32,7 @@ export default class Transactions extends React.Component {
                     purchase.numberOfShares
                   } Shares`}
                 </span>
-                <span>{`@ $${purchase.pricePurchasedAt / 100}`}</span>
+                <span>{`@ $${purchase.priceTradedAt / 100}`}</span>
               </div>
               <hr />
             </div>
