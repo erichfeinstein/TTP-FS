@@ -9,7 +9,6 @@ const getQuote = async tickerSymbol => {
   try {
     const { data } = await axios.get(
       URL + `/stable/stock/${tickerSymbol}/quote?token=${token}`
-      // URL + `/stable/stock/${tickerSymbol}/price?token=${token}`
     );
     return data;
   } catch (error) {

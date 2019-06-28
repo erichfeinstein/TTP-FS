@@ -33,13 +33,13 @@ Users have an email, encrypted password, and balance. Emails are unique, so no t
 
 In my database, a 'stock' refers to a stock symbol, and a specific user's number of shares owned in that stock.
 
-#### Purchase
+#### Transaction
 
-Similarly, each 'purchase' refers to a stock symbol and a specific user, but in this case the number of shares in each row refers to the number of shares purchased at a single time. This was done to accurately display the user their own transaction history (i.e. if they buy shares multiple times of a single stock).
+Similarly, each 'transaction' refers to a stock symbol and a specific user, but in this case the number of shares in each row refers to the number of shares traded at a single time. This was done to accurately display the user their own transaction history (i.e. if they buy shares multiple times of a single stock).
 
 ### Note
 
-Separating Stock and Purchase was done both to simplify the difference between a user's portfolio and a user's transaction history. Additionally, this schema allows for a smooth addition of a **selling** shares feature.
+Separating Stock and Transaction was done both to simplify the difference between a user's portfolio and a user's transaction history. Additionally, this schema allows for a smooth addition of a **selling** shares feature.
 
 ## Considerations
 
@@ -51,4 +51,4 @@ Since this application involves exchanging money, I wanted to be sure that it wa
 
 ## Challenges
 
-- Keeping things RESTful. Due to the inclusion of both the Purchase table and Stock table, I wondered how to handle my API route organization. I decided to that a POST request to **/api/purchases** would create a row in both the Stock table and Purchase table, instead of **post**ing to two different endpoints.
+- Keeping things RESTful. Due to the inclusion of both the Transaction table and Stock table, I wondered how to handle my API route organization. I decided to that a POST request to **/api/transactions** would create a row in both the Stock table and Transaction table, instead of **post**ing to two different endpoints.
