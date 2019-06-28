@@ -15,12 +15,21 @@ export default class AuthForm extends React.Component {
     };
   }
 
+  submitForm(isLogin) {
+    isLogin
+      ? this.login(this.state.email, this.state.password)
+      : this.signup(this.state.email, this.state.password);
+  }
+
   render() {
     const { isLogin } = this.props;
     const passwordsMatch =
       this.state.password === this.state.passwordReEnter && !isLogin;
     return (
-      <div id="auth-form">
+      <div
+        id="auth-form"
+        onKeyUp={evt => evt.keyCode === 13 && this.submitForm(isLogin)}
+      >
         <h2>{isLogin ? 'Log In' : 'Sign Up'}</h2>
         <br />
         <div>
@@ -96,12 +105,7 @@ export default class AuthForm extends React.Component {
         <button
           disabled={!passwordsMatch && !isLogin}
           className="button"
-          // onKeyDown=
-          onClick={
-            isLogin
-              ? () => this.login(this.state.email, this.state.password)
-              : () => this.signup(this.state.email, this.state.password)
-          }
+          onClick={() => this.submitForm(isLogin)}
         >
           {isLogin ? 'Log In' : 'Sign Up'}
         </button>
@@ -117,7 +121,10 @@ export default class AuthForm extends React.Component {
       this.props.setUser(data);
       this.props.history.push('/portfolio');
     } catch (error) {
-      if (error.response && error.response.status === 401)
+      if (
+        (error.response && error.response.status === 401) ||
+        (error.response && error.response.status === 404)
+      )
         this.setState({
           badCredentialsError: true,
         });

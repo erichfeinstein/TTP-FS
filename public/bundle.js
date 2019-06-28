@@ -447,7 +447,7 @@ var AuthForm = function (_React$Component) {
                 _context.prev = 9;
                 _context.t0 = _context['catch'](0);
 
-                if (_context.t0.response && _context.t0.response.status === 401) _this.setState({
+                if (_context.t0.response && _context.t0.response.status === 401 || _context.t0.response && _context.t0.response.status === 404) _this.setState({
                   badCredentialsError: true
                 });
                 console.error(_context.t0);
@@ -522,6 +522,11 @@ var AuthForm = function (_React$Component) {
   }
 
   _createClass(AuthForm, [{
+    key: 'submitForm',
+    value: function submitForm(isLogin) {
+      isLogin ? this.login(this.state.email, this.state.password) : this.signup(this.state.email, this.state.password);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
@@ -531,7 +536,12 @@ var AuthForm = function (_React$Component) {
       var passwordsMatch = this.state.password === this.state.passwordReEnter && !isLogin;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'div',
-        { id: 'auth-form' },
+        {
+          id: 'auth-form',
+          onKeyUp: function onKeyUp(evt) {
+            return evt.keyCode === 13 && _this3.submitForm(isLogin);
+          }
+        },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'h2',
           null,
@@ -636,12 +646,9 @@ var AuthForm = function (_React$Component) {
           'button',
           {
             disabled: !passwordsMatch && !isLogin,
-            className: 'button'
-            // onKeyDown=
-            , onClick: isLogin ? function () {
-              return _this3.login(_this3.state.email, _this3.state.password);
-            } : function () {
-              return _this3.signup(_this3.state.email, _this3.state.password);
+            className: 'button',
+            onClick: function onClick() {
+              return _this3.submitForm(isLogin);
             }
           },
           isLogin ? 'Log In' : 'Sign Up'
