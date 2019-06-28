@@ -1485,24 +1485,31 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var TransactionListItem = function TransactionListItem(props) {
+  var _props$purchase = props.purchase,
+      tickerSymbol = _props$purchase.tickerSymbol,
+      numberOfShares = _props$purchase.numberOfShares,
+      priceTradedAt = _props$purchase.priceTradedAt,
+      isPurchase = _props$purchase.isPurchase;
+
+  var transactionType = isPurchase ? 'BUY' : 'SELL';
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-    "div",
+    'div',
     null,
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      "div",
-      { className: "transaction-list-item" },
+      'div',
+      { className: 'transaction-list-item' },
       react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        "span",
+        'span',
         null,
-        "BUY (" + props.purchase.tickerSymbol + ") - " + props.purchase.numberOfShares + " Shares"
+        transactionType + ' (' + tickerSymbol + ') - ' + numberOfShares + ' Shares'
       ),
       react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        "span",
+        'span',
         null,
-        "@ $" + props.purchase.priceTradedAt / 100
+        '@ $' + priceTradedAt / 100
       )
     ),
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null)
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('hr', null)
   );
 };
 
