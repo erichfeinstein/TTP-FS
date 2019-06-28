@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import React from 'react';
-import { Router, Route, Link, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 
 //Util
@@ -8,13 +8,12 @@ import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
 //Components
-import Transactions from './Transactions';
-import Portfolio from './Portfolio';
+import Transactions from './Pages/Transactions';
+import Portfolio from './Pages/Portfolio';
 import AuthForm from './AuthForm';
 
 //Other Components
 import Modal from 'react-modal';
-import { slide as Menu } from 'react-burger-menu';
 import { Navbar } from './Navbar';
 
 //React-Modal

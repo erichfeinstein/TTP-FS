@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { TransactionListItem } from './TransactionListItem';
 
 export default class Transactions extends React.Component {
   constructor() {
@@ -10,7 +11,6 @@ export default class Transactions extends React.Component {
   }
 
   async componentDidMount() {
-    console.log(this.props.userId);
     const { data } = await axios.get(
       `/api/users/${this.props.userId}/transactions`
     );
@@ -24,18 +24,8 @@ export default class Transactions extends React.Component {
       <div>
         <h2>Transactions</h2>
         <div id="transactions-container">
-          {this.state.purchases.map(purchase => (
-            <div>
-              <div className="transaction-list-item">
-                <span>
-                  {`BUY (${purchase.tickerSymbol}) - ${
-                    purchase.numberOfShares
-                  } Shares`}
-                </span>
-                <span>{`@ $${purchase.priceTradedAt / 100}`}</span>
-              </div>
-              <hr />
-            </div>
+          {this.state.purchases.map((purchase, index) => (
+            <TransactionListItem purchase={purchase} key={index} />
           ))}
         </div>
       </div>

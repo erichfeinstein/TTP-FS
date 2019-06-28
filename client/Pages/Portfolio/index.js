@@ -40,7 +40,7 @@ export default class Portfolio extends React.Component {
   };
 
   purchase = async (tickerSymbol, numberOfShares, pricePerShare = 0) => {
-    await axios.post('/api/purchases', {
+    await axios.post('/api/transactions', {
       tickerSymbol,
       numberOfShares,
     });
