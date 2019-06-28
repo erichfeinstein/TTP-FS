@@ -14,7 +14,7 @@ const purchase = async (
 ) => {
   //Update user balance
   user.balance -= numberOfShares * latestPrice * 100;
-  user.save();
+  await user.save();
 
   //Create a transaction for transaction history
   const transaction = await Transaction.create({
@@ -46,7 +46,49 @@ const purchase = async (
     newStock.setUser(user);
   }
 };
-const sell = () => {};
+const sell = async (
+  user,
+  userId,
+  numberOfShares,
+  latestPrice,
+  tickerSymbol
+) => {
+  //Get the user's current number of shares in a stock, if they have any
+  const existingStock = await Stock.findOne({
+    where: {
+      tickerSymbol,
+      userId,
+    },
+  });
+  if (existingStock) {
+    const newShareCount =
+      Number(existingStock.numberOfSharesOwned) - Number(numberOfShares);
+    if (newShareCount > 0) {
+      //Create a transaction for transaction history
+      const transaction = await Transaction.create({
+        tickerSymbol,
+        numberOfShares,
+        priceTradedAt: latestPrice * 100, //Adjust for cents
+        isPurchase: false,
+      });
+
+      transaction.setUser(user);
+
+      //Update existing stock count
+      existingStock.numberOfSharesOwned = newShareCount;
+      await existingStock.save();
+
+      //Update user balance
+      user.balance += numberOfShares * latestPrice * 100;
+      await user.save();
+    } else
+      throw new Error(
+        'Error! You cannot sell more shares than you currently have!'
+      );
+  } else {
+    throw new Error('Error! You cannot sell stock you do not have!');
+  }
+};
 
 //Make a new stock transaction
 router.post('/', async (req, res, next) => {
@@ -61,17 +103,26 @@ router.post('/', async (req, res, next) => {
       if (latestPrice < 0) throw new Error('Bad ticker symbol!');
 
       //Verify user has enough balance
-      const userId = req.user.id;
+      const userId = req.body.userId;
       const user = await User.findById(userId);
 
       //If purchasing, check if the user has enough money to fulfill purchase request
-      if (user.balance < numberOfShares * latestPrice * 100 && isPurchase) {
-        res.status(304).send('Not enough funds to purchase!');
-      } else if (isPurchase) {
-        await purchase(user, userId, numberOfShares, latestPrice, tickerSymbol);
-        res.status(201).send('Successfully traded');
+      if (isPurchase === 'true') {
+        if (user.balance < numberOfShares * latestPrice * 100) {
+          res.status(304).send('Not enough funds to purchase!');
+        } else {
+          await purchase(
+            user,
+            userId,
+            numberOfShares,
+            latestPrice,
+            tickerSymbol
+          );
+          res.status(201).send('Successfully traded');
+        }
       } else {
-        //!isPurchase
+        await sell(user, userId, numberOfShares, latestPrice, tickerSymbol);
+        res.status(201).send('Successfully traded');
       }
     } else {
       res.send('You must be signed in to trade');
