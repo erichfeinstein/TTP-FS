@@ -923,7 +923,7 @@ var Purchase = function (_React$Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'div',
-        { id: 'purchase-container' },
+        { id: 'transaction-container' },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
           'h2',
           null,
@@ -1100,6 +1100,132 @@ var Purchase = function (_React$Component) {
 
 /***/ }),
 
+/***/ "./client/Pages/Portfolio/Sell.js":
+/*!****************************************!*\
+  !*** ./client/Pages/Portfolio/Sell.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Sell = function (_React$Component) {
+  _inherits(Sell, _React$Component);
+
+  function Sell() {
+    _classCallCheck(this, Sell);
+
+    var _this = _possibleConstructorReturn(this, (Sell.__proto__ || Object.getPrototypeOf(Sell)).call(this));
+
+    _this.createNumberOfSharesOptions = function (maxNumberOfShares) {
+      var options = [];
+      for (var i = 0; i <= maxNumberOfShares; i++) {
+        options.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          "option",
+          { key: i },
+          i
+        ));
+      }
+      return options;
+    };
+
+    _this.state = {
+      selectedStock: null,
+      numberOfShares: 0
+    };
+    return _this;
+  }
+
+  _createClass(Sell, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var selectedStock = JSON.parse(this.state.selectedStock);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        "div",
+        { id: "transaction-container" },
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          "h2",
+          null,
+          "Sell"
+        ),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          "div",
+          null,
+          "Ticker Symbol"
+        ),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          "select",
+          {
+            onChange: function onChange(evt) {
+              return _this2.setState({
+                selectedStock: evt.target.value
+              });
+            }
+          },
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", { value: null }),
+          this.props.stocks.map(function (stock, index) {
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+              "option",
+              { key: index, value: JSON.stringify(stock) },
+              stock.tickerSymbol
+            );
+          })
+        ),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          "div",
+          null,
+          "Number of Shares"
+        ),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          "select",
+          {
+            onChange: function onChange(evt) {
+              return _this2.setState({
+                numberOfShares: Number(evt.target.value)
+              });
+            }
+          },
+          this.createNumberOfSharesOptions(this.state.selectedStock ? selectedStock.numberOfSharesOwned : 0)
+        ),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+          "button",
+          {
+            onClick: function onClick() {
+              return _this2.props.sell(selectedStock.tickerSymbol, _this2.state.numberOfShares);
+            },
+            disabled: !this.state.selectedStock || this.state.numberOfShares === 0
+          },
+          "Sell"
+        )
+      );
+    }
+  }]);
+
+  return Sell;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (Sell);
+
+/***/ }),
+
 /***/ "./client/Pages/Portfolio/index.js":
 /*!*****************************************!*\
   !*** ./client/Pages/Portfolio/index.js ***!
@@ -1115,6 +1241,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _PortfolioTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PortfolioTable */ "./client/Pages/Portfolio/PortfolioTable.js");
 /* harmony import */ var _Purchase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Purchase */ "./client/Pages/Portfolio/Purchase.js");
+/* harmony import */ var _Sell__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Sell */ "./client/Pages/Portfolio/Sell.js");
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -1129,6 +1256,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 //Components
+
 
 
 
@@ -1235,6 +1363,51 @@ var Portfolio = function (_React$Component) {
       };
     }();
 
+    _this.sell = function () {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(tickerSymbol, numberOfShares) {
+        var _ref6, data;
+
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/stocks/' + tickerSymbol);
+
+              case 2:
+                _ref6 = _context4.sent;
+                data = _ref6.data;
+
+                if (!data) {
+                  _context4.next = 10;
+                  break;
+                }
+
+                _context4.next = 7;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/transactions', {
+                  tickerSymbol: tickerSymbol,
+                  numberOfShares: numberOfShares,
+                  isPurchase: false
+                });
+
+              case 7:
+                _this.props.updateBalance(false, data.latestPrice * numberOfShares * 100);
+                _context4.next = 10;
+                return _this.retrievePortfolio();
+
+              case 10:
+              case 'end':
+                return _context4.stop();
+            }
+          }
+        }, _callee4, _this2);
+      }));
+
+      return function (_x5, _x6) {
+        return _ref5.apply(this, arguments);
+      };
+    }();
+
     _this.state = {
       stocks: []
     };
@@ -1246,24 +1419,24 @@ var Portfolio = function (_React$Component) {
   _createClass(Portfolio, [{
     key: 'componentDidMount',
     value: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _context4.next = 2;
+                _context5.next = 2;
                 return this.retrievePortfolio();
 
               case 2:
               case 'end':
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee5, this);
       }));
 
       function componentDidMount() {
-        return _ref5.apply(this, arguments);
+        return _ref7.apply(this, arguments);
       }
 
       return componentDidMount;
@@ -1278,7 +1451,13 @@ var Portfolio = function (_React$Component) {
           'div',
           { id: 'portfolio-page-container' },
           react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PortfolioTable__WEBPACK_IMPORTED_MODULE_2__["default"], { stocks: this.state.stocks }),
-          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Purchase__WEBPACK_IMPORTED_MODULE_3__["default"], { purchase: this.purchase })
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+            'div',
+            { id: 'transaction-cta-container' },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Purchase__WEBPACK_IMPORTED_MODULE_3__["default"], { purchase: this.purchase }),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', null),
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Sell__WEBPACK_IMPORTED_MODULE_4__["default"], { stocks: this.state.stocks, sell: this.sell })
+          )
         )
       );
     }

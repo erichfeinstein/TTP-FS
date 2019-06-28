@@ -18,7 +18,7 @@ export default class Purchase extends React.Component {
 
   render() {
     return (
-      <div id="purchase-container">
+      <div id="transaction-container">
         <h2>Purchase</h2>
         <div>Ticker Symbol</div>
         <br />

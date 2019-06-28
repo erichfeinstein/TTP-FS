@@ -63,7 +63,7 @@ const sell = async (
   if (existingStock) {
     const newShareCount =
       Number(existingStock.numberOfSharesOwned) - Number(numberOfShares);
-    if (newShareCount > 0) {
+    if (newShareCount >= 0) {
       //Create a transaction for transaction history
       const transaction = await Transaction.create({
         tickerSymbol,
@@ -74,9 +74,14 @@ const sell = async (
 
       transaction.setUser(user);
 
-      //Update existing stock count
-      existingStock.numberOfSharesOwned = newShareCount;
-      await existingStock.save();
+      if (newShareCount === 0) {
+        //If no shares remain after this transaction, remove this row
+        await existingStock.destroy();
+      } else {
+        //Update existing stock count
+        existingStock.numberOfSharesOwned = newShareCount;
+        await existingStock.save();
+      }
 
       //Update user balance
       user.balance += numberOfShares * latestPrice * 100;
@@ -103,11 +108,11 @@ router.post('/', async (req, res, next) => {
       if (latestPrice < 0) throw new Error('Bad ticker symbol!');
 
       //Verify user has enough balance
-      const userId = req.body.userId;
+      const userId = req.user.id;
       const user = await User.findById(userId);
 
       //If purchasing, check if the user has enough money to fulfill purchase request
-      if (isPurchase === 'true') {
+      if (isPurchase) {
         if (user.balance < numberOfShares * latestPrice * 100) {
           res.status(304).send('Not enough funds to purchase!');
         } else {

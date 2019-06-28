@@ -81,7 +81,11 @@ body {
   display: grid;
   grid-template-columns: 50% 50%;
 }
-#purchase-container {
+#transaction-cta-container {
+  display: flex;
+  flex-direction: column;
+}
+#transaction-container {
   margin: 0 auto;
   padding: 0 2rem 2rem 2rem;
   border: 1px solid lightgrey;

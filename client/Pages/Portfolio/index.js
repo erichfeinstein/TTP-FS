@@ -4,6 +4,7 @@ import axios from 'axios';
 //Components
 import PortfolioTable from './PortfolioTable';
 import Purchase from './Purchase';
+import Sell from './Sell';
 
 export default class Portfolio extends React.Component {
   constructor() {
@@ -49,12 +50,29 @@ export default class Portfolio extends React.Component {
     await this.retrievePortfolio();
   };
 
+  sell = async (tickerSymbol, numberOfShares) => {
+    const { data } = await axios.get(`/api/stocks/${tickerSymbol}`);
+    if (data) {
+      await axios.post('/api/transactions', {
+        tickerSymbol,
+        numberOfShares,
+        isPurchase: false,
+      });
+      this.props.updateBalance(false, data.latestPrice * numberOfShares * 100);
+      await this.retrievePortfolio();
+    }
+  };
+
   render() {
     return (
       <div id="portfolio-container">
         <div id="portfolio-page-container">
           <PortfolioTable stocks={this.state.stocks} />
-          <Purchase purchase={this.purchase} />
+          <div id="transaction-cta-container">
+            <Purchase purchase={this.purchase} />
+            <br />
+            <Sell stocks={this.state.stocks} sell={this.sell} />
+          </div>
         </div>
       </div>
     );
