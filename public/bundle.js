@@ -1213,7 +1213,8 @@ var Portfolio = function (_React$Component) {
                 _context3.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/transactions', {
                   tickerSymbol: tickerSymbol,
-                  numberOfShares: numberOfShares
+                  numberOfShares: numberOfShares,
+                  isPurchase: true
                 });
 
               case 2:

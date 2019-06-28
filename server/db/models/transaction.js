@@ -17,6 +17,10 @@ const Transaction = db.define('transaction', {
     type: Sequelize.INTEGER, //In cents
     allowNull: false,
   },
+  isPurchase: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+  },
 });
 
 module.exports = Transaction;

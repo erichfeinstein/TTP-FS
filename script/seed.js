@@ -27,16 +27,19 @@ async function seed() {
       tickerSymbol: 'AAPL',
       numberOfShares: 25,
       priceTradedAt: 10000,
+      isPurchase: true,
     }),
     Transaction.create({
       tickerSymbol: 'GOOG',
       numberOfShares: 15,
       priceTradedAt: 300000,
+      isPurchase: true,
     }),
     Transaction.create({
       tickerSymbol: 'GOOG',
       numberOfShares: 50,
       priceTradedAt: 3000,
+      isPurchase: true,
     }),
   ]);
 

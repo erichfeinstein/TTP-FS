@@ -43,6 +43,7 @@ export default class Portfolio extends React.Component {
     await axios.post('/api/transactions', {
       tickerSymbol,
       numberOfShares,
+      isPurchase: true,
     });
     this.props.updateBalance(true, pricePerShare * numberOfShares * 100);
     await this.retrievePortfolio();
