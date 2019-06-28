@@ -103,7 +103,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var history__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! history */ "./node_modules/history/esm/history.js");
 /* harmony import */ var _Pages_Transactions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Pages/Transactions */ "./client/Pages/Transactions/index.js");
 /* harmony import */ var _Pages_Portfolio__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Pages/Portfolio */ "./client/Pages/Portfolio/index.js");
-/* harmony import */ var _AuthForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AuthForm */ "./client/AuthForm.js");
+/* harmony import */ var _Pages_AuthForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Pages/AuthForm */ "./client/Pages/AuthForm/index.js");
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-modal */ "./node_modules/react-modal/lib/index.js");
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Navbar */ "./client/Navbar.js");
@@ -331,7 +331,7 @@ var App = function (_React$Component) {
               exact: true,
               path: '/login',
               component: function component() {
-                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], {
+                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Pages_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], {
                   history: history,
                   setUser: _this3.setUser,
                   isLogin: true
@@ -342,7 +342,7 @@ var App = function (_React$Component) {
               exact: true,
               path: '/signup',
               component: function component() {
-                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], {
+                return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Pages_AuthForm__WEBPACK_IMPORTED_MODULE_6__["default"], {
                   history: history,
                   setUser: _this3.setUser,
                   isLogin: false
@@ -378,10 +378,102 @@ var App = function (_React$Component) {
 
 /***/ }),
 
-/***/ "./client/AuthForm.js":
-/*!****************************!*\
-  !*** ./client/AuthForm.js ***!
-  \****************************/
+/***/ "./client/Navbar.js":
+/*!**************************!*\
+  !*** ./client/Navbar.js ***!
+  \**************************/
+/*! exports provided: Navbar */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Navbar", function() { return Navbar; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
+
+
+var Navbar = function Navbar(props) {
+  var isLoggedIn = props.isLoggedIn,
+      openModal = props.openModal,
+      user = props.user;
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+    'div',
+    { id: 'nav-bar' },
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        'span',
+        null,
+        user.email
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        'span',
+        null,
+        '$' + (Number(user.balance) / 100).toFixed(2)
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/portfolio' },
+        'Portfolio'
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/transactions/' },
+        'Transactions'
+      )
+    ),
+    !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/signup/' },
+        'Sign Up'
+      )
+    ),
+    !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/login/' },
+        'Log In'
+      )
+    ),
+    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'div',
+      null,
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
+        { to: '/', onClick: openModal },
+        'Log Out'
+      )
+    )
+  );
+};
+
+/***/ }),
+
+/***/ "./client/Pages/AuthForm/index.js":
+/*!****************************************!*\
+  !*** ./client/Pages/AuthForm/index.js ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -658,98 +750,6 @@ var AuthForm = function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (AuthForm);
-
-/***/ }),
-
-/***/ "./client/Navbar.js":
-/*!**************************!*\
-  !*** ./client/Navbar.js ***!
-  \**************************/
-/*! exports provided: Navbar */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Navbar", function() { return Navbar; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-
-
-
-var Navbar = function Navbar(props) {
-  var isLoggedIn = props.isLoggedIn,
-      openModal = props.openModal,
-      user = props.user;
-
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-    'div',
-    { id: 'nav-bar' },
-    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'div',
-      null,
-      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        'span',
-        null,
-        user.email
-      )
-    ),
-    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'div',
-      null,
-      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        'span',
-        null,
-        '$' + (Number(user.balance) / 100).toFixed(2)
-      )
-    ),
-    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'div',
-      null,
-      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-        { to: '/portfolio' },
-        'Portfolio'
-      )
-    ),
-    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'div',
-      null,
-      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-        { to: '/transactions/' },
-        'Transactions'
-      )
-    ),
-    !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'div',
-      null,
-      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-        { to: '/signup/' },
-        'Sign Up'
-      )
-    ),
-    !isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'div',
-      null,
-      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-        { to: '/login/' },
-        'Log In'
-      )
-    ),
-    isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'div',
-      null,
-      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"],
-        { to: '/', onClick: openModal },
-        'Log Out'
-      )
-    )
-  );
-};
 
 /***/ }),
 

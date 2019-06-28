@@ -14,11 +14,11 @@ This application allows users to invest in stocks and monitor their portfolio's 
 
 ## Tech Stack
 
-This application is built with the NERDS stack:
+This application is built with the NERD stack:
 
 - Node.js
 - Express.js
-- React
+- React.js
 - Databases using SQL
 
 Writing my entire stack in JavaScript allowed me to quickly move from writing my React app to adjusting my server or database schema without much interruption.

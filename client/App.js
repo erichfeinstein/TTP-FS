@@ -10,7 +10,7 @@ const history = createBrowserHistory();
 //Components
 import Transactions from './Pages/Transactions';
 import Portfolio from './Pages/Portfolio';
-import AuthForm from './AuthForm';
+import AuthForm from './Pages/AuthForm';
 
 //Other Components
 import Modal from 'react-modal';
